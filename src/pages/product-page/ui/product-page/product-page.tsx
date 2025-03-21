@@ -4,13 +4,12 @@ import { JSX, useEffect } from 'react';
 import { generatePath, useParams } from 'react-router-dom';
 import { Layout } from '@shared/ui/layout';
 import { useAppDispatch, useAppSelector } from '@shared/lib/store';
-import { fetchProductAction } from '@pages/product-page/model/product-slice/actions';
+import { fetchProductAction } from '@pages/product-page/model/product-slice';
 import { productDataSelector } from '@pages/product-page/model/product-slice';
-import { FullProductCard } from '@entities/product';
 import { AppRoutesEnum } from '@shared/model/enums';
 import { CommentsList } from '../comments-list';
 import { ScrollupLink } from '@shared/ui/scrollup-link';
-import { SimilarProducts } from '../similar-products';
+import { ProductInfo } from '../product-info';
 
 type PageParams = {
   productId: string;
@@ -20,6 +19,7 @@ function ProductPage(): JSX.Element {
   const { productId } = useParams<PageParams>();
   const dispatch = useAppDispatch();
   const product = useAppSelector(productDataSelector);
+
   useEffect(
     () => {
       let isMounted = false;
@@ -59,10 +59,7 @@ function ProductPage(): JSX.Element {
               }
             ]}
           >
-            <div className='page-content__section'>
-              <FullProductCard product={product} />
-            </div>
-            <SimilarProducts />
+            <ProductInfo product={product}/>
             <div className='page-content__section'>
               <section className='review-block'>
                 <div className='container'>

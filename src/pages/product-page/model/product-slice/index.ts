@@ -1,4 +1,5 @@
 import { productSlicePageReducer } from './product-slice';
+import { fetchProductAction } from './actions';
 import {
   productDataSelector,
   productLoadingSelector,
@@ -11,5 +12,6 @@ export {
   productDataSelector,
   productLoadingSelector,
   productCommentsSelector,
-  productSimilarsSelector
+  productSimilarsSelector,
+  fetchProductAction
 };

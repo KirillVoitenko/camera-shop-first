@@ -12,6 +12,7 @@ import {
 } from './model/products-slice';
 import { ShortProductCard } from './ui/short-product-card';
 import { FullProductCard } from './ui/full-product-card';
+import { BasketProductCard } from './ui/basket-product-card';
 
 export {
   Product,
@@ -23,5 +24,6 @@ export {
   productsDataSelector,
   productsLoadingSelector,
   ShortProductCard,
-  FullProductCard
+  FullProductCard,
+  BasketProductCard
 };

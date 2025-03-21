@@ -15,10 +15,13 @@ import { ProductTabs } from '../product-tabs';
 
 type FullProductCardProps = Classed<{
   product: Product;
+  onBuyButtonClick: (product: Product) => void;
 }>;
 
-export function FullProductCard({ className, product }: FullProductCardProps): JSX.Element {
+export function FullProductCard({ className, product, onBuyButtonClick }: FullProductCardProps): JSX.Element {
   const sectionClassName = classNames('product', className);
+
+  const buyButtonClickHandler = () => onBuyButtonClick(product);
 
   return (
     <section className={sectionClassName} data-testid={FULL_PRODUCT_CARD_TEST_ID}>
@@ -48,7 +51,7 @@ export function FullProductCard({ className, product }: FullProductCardProps): J
             <span className='visually-hidden' />
             {moneyFormat(product.price)}
           </p>
-          <button className='btn btn--purple' type='button' data-testid={BUY_BUTTON_TEST_ID}>
+          <button className='btn btn--purple' type='button' data-testid={BUY_BUTTON_TEST_ID} onClick={buyButtonClickHandler}>
             <svg width={BUY_BUTTON_ICON_SIZE.width} height={BUY_BUTTON_ICON_SIZE.height} aria-hidden>
               <use xlinkHref='#icon-add-basket' />
             </svg>

@@ -9,7 +9,7 @@ type ContentProps = Classed<PropsWithChildren<{
 
 export function Content({ children, className, subHeader, breadcrumbs = [] }: ContentProps): JSX.Element {
   return (
-    <main className={className}>
+    <main className={className} data-testid='layout-content'>
       {subHeader}
       <div className='page-content'>
         <Breadcrumbs crumbs={breadcrumbs}/>

@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { Nullable } from '@shared/model/utill-types';
 import { Product } from '@entities/product';
 import { AppRoutesEnum } from '@shared/model/enums';
+import { Banner } from '../banner';
+import { CallItemModalContent } from '@features/call-item-modal-content';
 
 function MainPage() {
   const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
@@ -31,6 +33,7 @@ function MainPage() {
         <div className='container'>
           <h1 className='title title--h2'>Каталог фото- и видеотехники</h1>
           <div className='page-content__columns'>
+            <Banner />
             <div className='catalog__content'>
               <ProductsList onBuyButtonClick={buyButtonClickHandler} />
             </div>
@@ -42,10 +45,7 @@ function MainPage() {
         onClose={closeModalHandler}
       >
         <Modal.Content title='Свяжитесь со мной'>
-          <input autoFocus />
-          <input />
-          <input />
-          <input />
+          {!!buyedProduct && <CallItemModalContent product={buyedProduct} />}
         </Modal.Content>
       </Modal>
     </Layout.Content>

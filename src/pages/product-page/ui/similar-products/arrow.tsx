@@ -2,7 +2,7 @@ import { ElementSize } from '@shared/model/html';
 import classNames from 'classnames';
 import { CSSProperties, JSX, forwardRef, PropsWithRef } from 'react';
 
-type ArrowType = 'next' | 'previous';
+export type ArrowType = 'next' | 'previous';
 
 type ArrowProps = PropsWithRef<{
   type: ArrowType;
@@ -36,6 +36,7 @@ export const Arrow = forwardRef<HTMLButtonElement, ArrowProps>(({ type }, ref): 
       type='button'
       aria-label={labelText}
       style={BUTTON_STYLES}
+      data-testid='swiper-arrow'
     >
       <svg width={ARROW_SIZE.width} height={ARROW_SIZE.height} aria-hidden>
         <use xlinkHref='#icon-arrow' />

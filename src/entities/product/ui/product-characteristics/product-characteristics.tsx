@@ -3,7 +3,7 @@ import { getProductTypeDisplayValue } from '@entities/product/lib/get-product-ty
 import { Product } from '@entities/product/model/types';
 import { JSX } from 'react';
 
-type CharacteristicsViewType = 'buyModal' | 'page';
+type CharacteristicsViewType = 'basket' | 'page';
 
 type ProductCharacteristicsProps = {
   viewType: CharacteristicsViewType;
@@ -11,21 +11,21 @@ type ProductCharacteristicsProps = {
 };
 
 export function ProductCharacteristics({ product, viewType }: ProductCharacteristicsProps): JSX.Element {
-  const listClassName = viewType === 'buyModal' ? 'basket-item__list' : 'product__tabs-list';
+  const listClassName = viewType === 'basket' ? 'basket-item__list' : 'product__tabs-list';
   return (
     <ul data-testid={PRODUCT_CHARACTERISTICS_LIST_TEST_ID} className={listClassName}>
-      {viewType === 'buyModal' && (
+      {viewType === 'basket' && (
         <>
           <li className='basket-item__list-item'>
             <span className='basket-item__article'>
-              Артикул:
+              Артикул:&nbsp;
             </span>
             <span className='basket-item__number'>
               {product.vendorCode}
             </span>
           </li>
           <li className='basket-item__list-item'>
-            {getProductTypeDisplayValue(product.type, product.category)} {product.category}
+            {`${getProductTypeDisplayValue(product.type, product.category)} ${product.category.toLowerCase()}`}
           </li>
           <li className='basket-item__list-item'>
             {product.level} уровень

@@ -23,10 +23,10 @@ describe('Component \'ProductCharacteristics\'', () => {
     expect(screen.getByText(productMock.level)).toBeInTheDocument();
   });
 
-  it('should correct render by \'buyModal\' view type', () => {
-    const typeDescription = `${getProductTypeDisplayValue(productMock.type, productMock.category)} ${productMock.category}`;
+  it('should correct render by \'basket\' view type', () => {
+    const typeDescription = `${getProductTypeDisplayValue(productMock.type, productMock.category)} ${productMock.category.toLowerCase()}`;
     const levelDescription = `${productMock.level} уровень`;
-    const screen = render(<ProductCharacteristics product={productMock} viewType='buyModal' />);
+    const screen = render(<ProductCharacteristics product={productMock} viewType='basket' />);
 
     expect(screen.getByText(ARTICULUS_PATTERN)).toBeInTheDocument();
     expect(screen.getByText(productMock.vendorCode)).toBeInTheDocument();

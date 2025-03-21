@@ -54,6 +54,6 @@ describe('Component \'ShortProductCard\'', () => {
       screen.getByText(MORE_INFO_LINK_TEXT)
     );
 
-    expect(history.location.pathname).toBe(`/${expectedUrl}`);
+    expect(history.location.pathname).toBe(`${expectedUrl}`);
   });
 });
