@@ -19,7 +19,7 @@ export function BasketProductCard({product, className, children}: BasketProductC
   const containerClassName = classNames('basket-item', className);
 
   return (
-    <div className={containerClassName}>
+    <div className={containerClassName} data-testid='basket-product-card'>
       <Preview
         image={{
           src: `/${product.previewImg}`,

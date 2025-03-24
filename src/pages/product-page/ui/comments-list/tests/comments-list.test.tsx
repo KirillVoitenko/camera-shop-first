@@ -9,6 +9,7 @@ import {
 import { generateCommentMock } from '@test-utills/mocks/comment';
 import faker from 'faker';
 import userEvent from '@testing-library/user-event';
+import { intersectionObserverMock } from '@test-utills/mocks/system-modules';
 
 const SHOW_MORE_BUTTON_PATTERN = /показать больше отзывов/gi;
 const COMMENT_CARD_TEST_ID = 'comment-card-container';
@@ -16,14 +17,7 @@ const COMMENT_CARD_TEST_ID = 'comment-card-container';
 vi.mock('IntersectionObserver');
 
 describe('Component \'CommentsList\'', () => {
-  const intersectionObserverMock = vi.fn();
-  beforeEach(() => {
-    intersectionObserverMock.mockReturnValue({
-      observe: vi.fn(),
-      unobserve: vi.fn(),
-      disconnect: vi.fn(),
-    });
-
+  beforeAll(() => {
     window.IntersectionObserver = intersectionObserverMock;
   });
 

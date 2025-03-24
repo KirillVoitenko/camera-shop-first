@@ -48,3 +48,8 @@
 .disabled-pointer-events {
   pointer-events: none;
 }
+
+.swiper {
+  width:100%;
+  height:100%
+}

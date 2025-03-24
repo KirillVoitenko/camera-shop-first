@@ -11,6 +11,7 @@ describe('Component \'ProductInfo\'' , () => {
     vi.spyOn(await import('@entities/product'), 'FullProductCard').mockImplementation(vi.fn(() => <p>{FAKE_PRODUCT_CARD_TEXT}</p>));
     vi.spyOn(await import('../../similar-products'), 'SimilarProducts').mockImplementation(vi.fn(() => <p>{FAKE_SIMILARS_TEXT}</p>));
     vi.spyOn(await import('@features/call-item-modal-content'), 'CallItemModalContent').mockImplementation(vi.fn(() => <p>FAKE CALL MODAL</p>));
+    vi.spyOn(await import('@shared/lib/store/use-async-thunk-dispatch'), 'useAsyncThunkDispatch').mockImplementation(vi.fn());
 
     const screen = render(<ProductInfo product={PRODUCT_MOCK}/>);
 

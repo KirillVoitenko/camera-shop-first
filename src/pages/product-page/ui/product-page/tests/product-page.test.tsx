@@ -8,6 +8,7 @@ import { ProductPageWithTitle as ProductPage } from '../product-page';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { FetchProductActionReturn } from '@pages/product-page/model/product-slice/actions';
 import { isActionsEquals } from '@test-utills/mocks/redux';
+import { intersectionObserverMock } from '@test-utills/mocks/system-modules';
 
 const PRODUCT_MOCK = generateProductMock();
 
@@ -45,14 +46,7 @@ const componentRender = () => {
 };
 
 describe('Component \'ProductPage\'', () => {
-  const intersectionObserverMock = vi.fn();
-  beforeEach(() => {
-    intersectionObserverMock.mockReturnValue({
-      observe: vi.fn(),
-      unobserve: vi.fn(),
-      disconnect: vi.fn(),
-    });
-
+  beforeAll(() => {
     window.IntersectionObserver = intersectionObserverMock;
   });
 

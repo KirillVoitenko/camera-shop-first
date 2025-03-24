@@ -55,6 +55,7 @@ export function FullProductCard({ className, product, onBuyButtonClick }: FullPr
             <svg width={BUY_BUTTON_ICON_SIZE.width} height={BUY_BUTTON_ICON_SIZE.height} aria-hidden>
               <use xlinkHref='#icon-add-basket' />
             </svg>
+            Купить
           </button>
           <ProductTabs product={product} />
         </div>

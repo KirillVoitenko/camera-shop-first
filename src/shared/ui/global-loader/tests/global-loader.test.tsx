@@ -18,6 +18,7 @@ describe('Component GlobalLoader', () => {
       <GlobalLoader
         productListLoadingSelector={falseReturnSelectorMock}
         productPageLoadingSelector={falseReturnSelectorMock}
+        basketLoadingSelector={falseReturnSelectorMock}
       />);
 
     expect(screen.queryByTestId(loaderContainerTestId)).toBeInTheDocument();
@@ -29,6 +30,7 @@ describe('Component GlobalLoader', () => {
       <GlobalLoader
         productListLoadingSelector={trueReturnSelectorMock}
         productPageLoadingSelector={falseReturnSelectorMock}
+        basketLoadingSelector={falseReturnSelectorMock}
       />);
 
     expect(screen.getByTestId(loaderContainerTestId)).toBeInTheDocument();
@@ -40,6 +42,19 @@ describe('Component GlobalLoader', () => {
       <GlobalLoader
         productListLoadingSelector={falseReturnSelectorMock}
         productPageLoadingSelector={trueReturnSelectorMock}
+        basketLoadingSelector={falseReturnSelectorMock}
+      />);
+
+    expect(screen.getByTestId(loaderContainerTestId)).toBeInTheDocument();
+    expect(screen.getByTestId(spinnerTestId)).toBeInTheDocument();
+  });
+
+  it('shold correct render with basket is loading', () => {
+    const screen = render(
+      <GlobalLoader
+        productListLoadingSelector={falseReturnSelectorMock}
+        productPageLoadingSelector={falseReturnSelectorMock}
+        basketLoadingSelector={trueReturnSelectorMock}
       />);
 
     expect(screen.getByTestId(loaderContainerTestId)).toBeInTheDocument();

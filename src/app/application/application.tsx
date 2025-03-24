@@ -6,6 +6,7 @@ import { useStartup } from './use-startup';
 import { GlobalLoader } from '@shared/ui/global-loader';
 import { productsLoadingSelector } from '@entities/product';
 import { productLoadingSelector } from '@pages/product-page';
+import { basketLoadingSelector } from '@features/basket';
 
 export function Application(): JSX.Element {
   useStartup();
@@ -14,6 +15,7 @@ export function Application(): JSX.Element {
       <GlobalLoader
         productListLoadingSelector={productsLoadingSelector}
         productPageLoadingSelector={productLoadingSelector}
+        basketLoadingSelector={basketLoadingSelector}
       />
       <RouterProvider />
       <ToastContainer />

@@ -10,16 +10,19 @@ type GlobalLoaderProps = {
   className?: string;
   productListLoadingSelector: Selector;
   productPageLoadingSelector: Selector;
+  basketLoadingSelector: Selector;
 }
 
 export function GlobalLoader({
   className,
   productListLoadingSelector,
   productPageLoadingSelector,
+  basketLoadingSelector,
 }: GlobalLoaderProps): JSX.Element {
   const productsLoading = useAppSelector(productListLoadingSelector);
   const productPageLoading = useAppSelector(productPageLoadingSelector);
-  const loading = productsLoading || productPageLoading;
+  const basketLoading = useAppSelector(basketLoadingSelector);
+  const loading = productsLoading || productPageLoading || basketLoading;
 
   const loaderClassName = classNames(
     'loader-container',

@@ -9,10 +9,24 @@ import { Product } from '@entities/product';
 import { AppRoutesEnum } from '@shared/model/enums';
 import { Banner } from '../banner';
 import { CallItemModalContent } from '@features/call-item-modal-content';
+import { createOrderFetchAction } from '@entities/order';
+import { useAsyncThunkDispatch } from '@shared/lib/store/use-async-thunk-dispatch';
+import { toast } from 'react-toastify';
+import { TOAST_CONTAINER_ID } from '@shared/ui/toast-container';
 
 function MainPage() {
   const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
+
   const closeModalHandler = () => setBuyedProduct(null);
+
+  const dispatchCreateOrderAction = useAsyncThunkDispatch(
+    createOrderFetchAction,
+    () => {
+      closeModalHandler();
+      toast.success('Заказ успешно сформирован', {containerId: TOAST_CONTAINER_ID});
+    },
+    () => toast.error('Не удалось создать заказ', {containerId: TOAST_CONTAINER_ID})
+  );
 
   const buyButtonClickHandler = (product: Product) => {
     setBuyedProduct(product);
@@ -45,7 +59,7 @@ function MainPage() {
         onClose={closeModalHandler}
       >
         <Modal.Content title='Свяжитесь со мной'>
-          {!!buyedProduct && <CallItemModalContent product={buyedProduct} />}
+          {!!buyedProduct && <CallItemModalContent product={buyedProduct} onCreateOrder={dispatchCreateOrderAction} />}
         </Modal.Content>
       </Modal>
     </Layout.Content>
