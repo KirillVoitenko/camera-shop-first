@@ -17,6 +17,7 @@ describe('Action \'fetchProductsAction\'', () => {
 
   it('should dispatch all necessary actions if resolved', async () => {
     axiosMockAdapter.onGet(ServerRoutesEnum.Products).reply(200);
+    axiosMockAdapter.onGet(ServerRoutesEnum.Promo).reply(200);
     await store.dispatch(fetchProductsAction());
 
     const result = isActionsEquals(
@@ -32,6 +33,8 @@ describe('Action \'fetchProductsAction\'', () => {
 
   it('should dispatch all necessary actions if rejected', async () => {
     axiosMockAdapter.onGet(ServerRoutesEnum.Products).reply(500);
+    axiosMockAdapter.onGet(ServerRoutesEnum.Promo).reply(200);
+
     await store.dispatch(fetchProductsAction());
 
     const result = isActionsEquals(

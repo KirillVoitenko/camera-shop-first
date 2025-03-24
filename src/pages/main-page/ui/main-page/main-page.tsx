@@ -13,6 +13,7 @@ import { createOrderFetchAction } from '@entities/order';
 import { useAsyncThunkDispatch } from '@shared/lib/store/use-async-thunk-dispatch';
 import { toast } from 'react-toastify';
 import { TOAST_CONTAINER_ID } from '@shared/ui/toast-container';
+import { PromosSlider } from '../promos-slider';
 
 function MainPage() {
   const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
@@ -25,7 +26,9 @@ function MainPage() {
       closeModalHandler();
       toast.success('Заказ успешно сформирован', {containerId: TOAST_CONTAINER_ID});
     },
-    () => toast.error('Не удалось создать заказ', {containerId: TOAST_CONTAINER_ID})
+    () => {
+      toast.error('Не удалось создать заказ', {containerId: TOAST_CONTAINER_ID});
+    }
   );
 
   const buyButtonClickHandler = (product: Product) => {
@@ -42,6 +45,7 @@ function MainPage() {
           isActive: true
         }
       ]}
+      subHeader={<PromosSlider />}
     >
       <section className='catalog'>
         <div className='container'>

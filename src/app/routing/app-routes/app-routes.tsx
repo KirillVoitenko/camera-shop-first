@@ -2,6 +2,7 @@ import { JSX, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AppRoutesEnum } from '@shared/model/enums';
 import { PageLayout } from '../page-layout/ui/page-layout';
+import { Fallback } from '../fallback';
 
 const MainPage = lazy(() => import('@pages/main-page'));
 const ProductPage = lazy(() => import('@pages/product-page'));
@@ -14,7 +15,7 @@ export function AppRoutes(): JSX.Element {
         <Route
           index
           element={
-            <Suspense>
+            <Suspense fallback={<Fallback />}>
               <MainPage />
             </Suspense>
           }
@@ -22,7 +23,7 @@ export function AppRoutes(): JSX.Element {
         <Route
           path={AppRoutesEnum.Product}
           element={
-            <Suspense>
+            <Suspense fallback={<Fallback />}>
               <ProductPage />
             </Suspense>
           }
@@ -30,7 +31,7 @@ export function AppRoutes(): JSX.Element {
         <Route
           path={'*'}
           element={
-            <Suspense>
+            <Suspense fallback={<Fallback />}>
               <NotFoundPage />
             </Suspense>
           }

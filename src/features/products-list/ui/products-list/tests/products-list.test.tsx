@@ -14,7 +14,7 @@ describe('Component \'ProductsList\'', () => {
   const history = createMemoryHistory();
 
   it('should correct render', () => {
-    const { wrappedComponent } = withStore(<ProductsList onBuyButtonClick={vi.fn()} />, { products: { loading: false, products: PRODUCTS_MOCK } }, [], history);
+    const { wrappedComponent } = withStore(<ProductsList onBuyButtonClick={vi.fn()} />, { products: { loading: false, products: PRODUCTS_MOCK, promos: [] } }, [], history);
 
     const screen = render(wrappedComponent);
 

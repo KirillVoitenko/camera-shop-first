@@ -36,11 +36,11 @@ export const withStore = (
   >([thunkMiddleware].concat(additionalMiddlewares));
 
   const mockedStore = storeCreator(initialState);
-  const connectedToStoreComponent = <Provider store={mockedStore}>{component}</Provider>;
-  const wrappedComponent = history ? withRouter(connectedToStoreComponent) : connectedToStoreComponent;
+  const wrappedComponent = history ? withRouter(component, history) : component;
+  const connectedToStoreComponent = <Provider store={mockedStore}>{wrappedComponent}</Provider>;
 
   return {
-    wrappedComponent,
+    wrappedComponent: connectedToStoreComponent,
     axiosAdapter: axiosMockAdapter,
     axiosInstance,
     store: mockedStore

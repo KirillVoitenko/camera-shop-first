@@ -9,6 +9,7 @@ import {
   productSliceReducer,
   productsDataSelector,
   productsLoadingSelector,
+  promoProductsDataSelector
 } from './model/products-slice';
 import { ShortProductCard } from './ui/short-product-card';
 import { FullProductCard } from './ui/full-product-card';
@@ -23,6 +24,7 @@ export {
   productSliceReducer,
   productsDataSelector,
   productsLoadingSelector,
+  promoProductsDataSelector,
   ShortProductCard,
   FullProductCard,
   BasketProductCard

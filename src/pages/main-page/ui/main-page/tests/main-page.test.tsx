@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { withRouter, withStore, withHelmet } from '@test-utills/wrappers';
 import { RootState } from '@shared/model/redux';
-import { generateProductMock } from '@test-utills/mocks/product';
+import { generateProductMock, generatePromoProductMock } from '@test-utills/mocks/product';
 import faker from 'faker';
 import { MainPageWithTitle as MainPage } from '../main-page';
 import { BANNER_TEST_ID } from '@pages/main-page/config/const';
@@ -9,12 +9,14 @@ import { BANNER_TEST_ID } from '@pages/main-page/config/const';
 const INITIAL_STATE: Partial<RootState> = {
   products: {
     loading: false,
-    products: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generateProductMock())
+    products: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generateProductMock()),
+    promos: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generatePromoProductMock()),
   }
 };
 
 const LAYOUT_CONTENT_TEST_ID = 'layout-content';
 const PRODUCT_LIST_TEST_ID = 'products-list-container';
+const FAKE_PROMOS_SLIDER_TEXT = faker.lorem.sentence();
 
 const componentRender = () => {
   const { wrappedComponent } = withStore(withRouter(withHelmet(<MainPage />)), INITIAL_STATE);
@@ -22,12 +24,13 @@ const componentRender = () => {
 };
 
 describe('Component \'MainPage\'', () => {
-
-  it('should correct render', () => {
+  it('should correct render', async () => {
+    vi.spyOn(await import('../../promos-slider'), 'PromosSlider').mockImplementation(vi.fn(() => <p>{FAKE_PROMOS_SLIDER_TEXT}</p>));
     const screen = render(componentRender());
 
     expect(screen.getByTestId(LAYOUT_CONTENT_TEST_ID)).toBeInTheDocument();
     expect(screen.getByTestId(BANNER_TEST_ID)).toBeInTheDocument();
     expect(screen.getByTestId(PRODUCT_LIST_TEST_ID)).toBeInTheDocument();
+    expect(screen.getByText(FAKE_PROMOS_SLIDER_TEXT)).toBeInTheDocument();
   });
 });

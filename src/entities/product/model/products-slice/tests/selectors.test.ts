@@ -1,39 +1,62 @@
-import { generateProductMock } from '@test-utills/mocks/product';
+import { generateProductMock, generatePromoProductMock } from '@test-utills/mocks/product';
 import {
   PickedProductsState,
   productsDataSelector,
-  productsLoadingSelector
+  productsLoadingSelector,
+  promoProductsDataSelector
 } from '../selectors';
 
+type EachArg = {
+  selector: (state: PickedProductsState) => unknown;
+  state: PickedProductsState;
+  expected: unknown;
+  name: string;
+}
+
 describe('Products slice selectors', () => {
-  describe('products loading selector', () => {
-    it('should return correct state', () => {
-      const expectedState: PickedProductsState = {
+  const promoProducts = [generatePromoProductMock()];
+  const products = [generateProductMock()];
+
+  it.each<EachArg>([
+    {
+      expected: true,
+      name: 'productsLoadingSelector',
+      selector: productsLoadingSelector,
+      state: {
+        products: {
+          loading: true,
+          products: [],
+          promos: []
+        }
+      }
+    },
+    {
+      expected: products,
+      name: 'productsDataSelector',
+      selector: productsDataSelector,
+      state: {
         products: {
           loading: false,
-          products: []
+          products: products,
+          promos: []
         }
-      };
-
-      const result = productsLoadingSelector(expectedState);
-
-      expect(result).toBe(expectedState.products.loading);
-    });
-  });
-
-  describe('products data selector', () => {
-    it('should return correct state', () => {
-      const products = [generateProductMock()];
-      const expectedState: PickedProductsState = {
+      }
+    },
+    {
+      expected: promoProducts,
+      name: 'promoProductsDataSelector',
+      selector: promoProductsDataSelector,
+      state: {
         products: {
           loading: false,
-          products
+          products: [],
+          promos: promoProducts
         }
-      };
+      }
+    },
+  ])('selector $name should return correct state', ({ expected, selector, state }) => {
+    const result = selector(state);
 
-      const result = productsDataSelector(expectedState);
-
-      expect(result).toBe(products);
-    });
+    expect(result).toEqual(expected);
   });
 });

@@ -1,5 +1,5 @@
-import { generateProductMock } from '@test-utills/mocks/product';
-import { Product } from '../../types';
+import { generateProductMock, generatePromoProductMock } from '@test-utills/mocks/product';
+import { Product, PromoProduct } from '../../types';
 import { productSliceReducer } from '../products-slice';
 import { INITIAL_STATE } from '../products-slice';
 import { emptyAction } from '@test-utills/mocks/redux';
@@ -9,9 +9,11 @@ import { fetchProductsAction } from '../actions';
 describe('Products list reducer', () => {
   let productMock: Product;
   let initialState: ProductSliceState;
+  let promoProductMock: PromoProduct;
 
   beforeEach(() => {
     productMock = generateProductMock();
+    promoProductMock = generatePromoProductMock();
     initialState = { ...INITIAL_STATE };
   });
 
@@ -41,9 +43,10 @@ describe('Products list reducer', () => {
 
   it('should return correct state by \'fetchProductsAction.fullfilled\' action', () => {
     const products = [productMock];
-    const expectedState: ProductSliceState = { ...INITIAL_STATE, loading: false, products };
+    const promos = [promoProductMock];
+    const expectedState: ProductSliceState = { ...INITIAL_STATE, loading: false, products, promos };
 
-    const result = productSliceReducer(INITIAL_STATE, fetchProductsAction.fulfilled(products, '', undefined));
+    const result = productSliceReducer(INITIAL_STATE, fetchProductsAction.fulfilled({products, promos }, '', undefined));
 
     expect(result).toEqual(expectedState);
   });

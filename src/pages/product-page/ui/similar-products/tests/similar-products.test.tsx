@@ -1,18 +1,16 @@
 import { withRouter, withStore } from '@test-utills/wrappers';
 import { render } from '@testing-library/react';
-import { SwiperSlideProps } from 'swiper/react';
+import { SwiperSlideProps, SwiperProps } from 'swiper/react';
 import { SimilarProducts } from '../similar-products';
 import { RootState } from '@shared/model/redux';
 import { generateProductMock } from '@test-utills/mocks/product';
 import faker from 'faker';
 
 vi.mock('swiper/react', () => ({
-  Swiper: ({children}: SwiperSlideProps) => (
+  Swiper: ({children}: SwiperProps) => (
     <div>
       <p>FAKE SWIPER</p>
-      {typeof children === 'function'
-        ? children({isActive: true, isNext: true, isPrev: true, isVisible: true})
-        : children}
+      {children}
     </div>
   ),
   SwiperSlide: ({children}: SwiperSlideProps) => (

@@ -12,5 +12,6 @@ export enum ServerRoutesEnum {
   Product = '/cameras/:cameraId',
   Comments = '/cameras/:cameraId/reviews',
   SimilarProducts = '/cameras/:cameraId/similar',
-  Orders = '/orders'
+  Orders = '/orders',
+  Promo = '/promo',
 }

@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from '@features/call-item-modal-content/config/validation';
 import { CallFormValue } from '@features/call-item-modal-content/model/types';
-import { PHONE_MASK_CHAR, PHONE_MASK } from '@features/call-item-modal-content/config/const';
+import { PHONE_MASK } from '@features/call-item-modal-content/config/const';
 import { Order } from '@entities/order';
 import { createOrderByFormData } from '@features/call-item-modal-content/lib/create-order';
 import classNames from 'classnames';
@@ -81,7 +81,6 @@ export function CallItemModalContent({ product, className, onCreateOrder }: Call
           <MaskedInput
             type='tel'
             mask={PHONE_MASK}
-            maskChar={PHONE_MASK_CHAR}
             placeholder='Введите ваш номер'
             {...register('tel')}
           />

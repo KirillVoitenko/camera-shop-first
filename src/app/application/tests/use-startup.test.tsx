@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { getStoreWrapper } from '@test-utills/wrappers';
 import { Action, createAsyncThunk } from '@reduxjs/toolkit';
-import { generateProductMock } from '@test-utills/mocks/product';
+import { generateProductMock, generatePromoProductMock } from '@test-utills/mocks/product';
 import faker from 'faker';
 import { Product } from '@entities/product';
 import { useStartup } from '../use-startup';
@@ -9,12 +9,19 @@ import { AppThunkDispatch, createAppThunkMiddlewareMock, isActionsEquals } from 
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { RootState } from '@shared/model/redux';
 import { FC } from 'react';
+import { PromoProduct } from '@entities/product/model/types';
 
 const PRODUCTS_MOCK = Array.from({length: faker.datatype.number({max: 10})}).map(() => generateProductMock());
+const PROMOS_MOCK = Array.from({length: faker.datatype.number({max: 10})}).map(() => generatePromoProductMock());
 
-const fakeFetchProductsAction = createAsyncThunk<Product[], undefined>(
+type FetchProductActionReturn = {
+  products: Product[];
+  promos: PromoProduct[];
+}
+
+const fakeFetchProductsAction = createAsyncThunk<FetchProductActionReturn, undefined>(
   'test/fetchProduct',
-  async (): Promise<Product[]> => Promise.resolve(PRODUCTS_MOCK)
+  async (): Promise<FetchProductActionReturn> => Promise.resolve({products: PRODUCTS_MOCK, promos: PROMOS_MOCK})
 );
 
 describe('Hook \'useStartup\'', () => {

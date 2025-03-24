@@ -1,21 +1,22 @@
 import { Classed } from '@shared/model/style-types';
-import { JSX, ComponentProps } from 'react';
+import { JSX, ComponentProps, PropsWithChildren } from 'react';
 
 type SourceProps = Omit<ComponentProps<'source'>, 'type'>;
 type ImageProps = ComponentProps<'img'>;
 
-type PreviewProps = Classed<{
+type PreviewProps = Classed<PropsWithChildren<{
   source: SourceProps;
   image: ImageProps;
-}>;
+}>>;
 
-export function Preview({image, source, className}: PreviewProps): JSX.Element {
+export function Preview({image, source, className, children}: PreviewProps): JSX.Element {
   return (
     <div className={className} data-testid='preview-container'>
       <picture>
         <source type='image/webp' {...source} />
         <img {...image} />
       </picture>
+      {children}
     </div>
   );
 }
