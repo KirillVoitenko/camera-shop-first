@@ -12,6 +12,7 @@ import {
   RATING_ICON_SIZE,
 } from './const';
 import { ProductTabs } from '../product-tabs';
+import { SvgIcon } from '@shared/ui/svg-icon';
 
 type FullProductCardProps = Classed<{
   product: Product;
@@ -52,9 +53,7 @@ export function FullProductCard({ className, product, onBuyButtonClick }: FullPr
             {moneyFormat(product.price)}
           </p>
           <button className='btn btn--purple' type='button' data-testid={BUY_BUTTON_TEST_ID} onClick={buyButtonClickHandler}>
-            <svg width={BUY_BUTTON_ICON_SIZE.width} height={BUY_BUTTON_ICON_SIZE.height} aria-hidden>
-              <use xlinkHref='#icon-add-basket' />
-            </svg>
+            <SvgIcon size={BUY_BUTTON_ICON_SIZE} xlinkHref='#icon-add-basket' />
             Купить
           </button>
           <ProductTabs product={product} />

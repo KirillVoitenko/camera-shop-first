@@ -3,6 +3,7 @@ import { LOGO_SIZE, LogoIconLink, LogoIconClassName, LOGO_TEST_ID } from './cons
 import { Link, To } from 'react-router-dom';
 import classNames from 'classnames';
 import { AppRoutesEnum } from '@shared/model/enums';
+import { SvgIcon } from '../svg-icon';
 
 type LogoType = 'header' | 'footer';
 
@@ -21,9 +22,7 @@ export function Logo({ type, to = AppRoutesEnum.Main }: LogoProps): JSX.Element 
 
   return (
     <Link className={linkClassName} to={to} aria-label='Перейти на главную' data-testid={LOGO_TEST_ID}>
-      <svg width={LOGO_SIZE.width} height={LOGO_SIZE.height} aria-hidden>
-        <use xlinkHref={logoLink}/>
-      </svg>
+      <SvgIcon size={LOGO_SIZE} xlinkHref={logoLink} />
     </Link>
   );
 }

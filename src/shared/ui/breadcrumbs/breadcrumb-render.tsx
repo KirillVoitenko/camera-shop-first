@@ -1,6 +1,7 @@
 import { ElementSize } from '@shared/model/html';
 import { Breadcrumb } from './types';
 import { Link } from 'react-router-dom';
+import { SvgIcon } from '../svg-icon';
 
 const ARROW_SIZE: ElementSize = {
   height: 8,
@@ -20,9 +21,7 @@ export const breadcrumbRender = (crumb: Breadcrumb): JSX.Element => (
         className='breadcrumbs__link'
       >
         {crumb.title}
-        <svg width={ARROW_SIZE.width} height={ARROW_SIZE.height} aria-hidden>
-          <use xlinkHref='#icon-arrow-mini' />
-        </svg>
+        <SvgIcon size={ARROW_SIZE} xlinkHref='#icon-arrow-mini' />
       </Link>
     )
 );

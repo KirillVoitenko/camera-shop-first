@@ -3,7 +3,7 @@ import { withRouter } from '@test-utills/wrappers';
 import { render, screen, waitFor } from '@testing-library/react';
 import faker from 'faker';
 import { createMemoryHistory } from 'history';
-import { generatePath } from 'react-router-dom';
+import { generatePath, Outlet } from 'react-router-dom';
 import { AppRoutes } from '../app-routes';
 
 const FAKE_MAIN_PAGE_TEXT = faker.lorem.paragraph();
@@ -14,6 +14,7 @@ const INITIAL_ROUTE = '/initial-route';
 const MainPageMock = () => <p>{FAKE_MAIN_PAGE_TEXT}</p>;
 const ProductPageMock = () => <p>{FAKE_PRODUCT_PAGE_TEXT}</p>;
 const NotFoundPageMock = () => <p>{FAKE_404_PAGE_TEXT}</p>;
+const PageLayoutMock = () => <div><Outlet /></div>;
 
 type EachArg = {
   pageName: string;
@@ -33,6 +34,7 @@ describe('Component \'AppRoutes\'', () => {
     { expectedText: FAKE_PRODUCT_PAGE_TEXT, pageName: 'ProductPage', pageRoute: generatePath(AppRoutesEnum.Product, { productId: String(faker.datatype.number()) }) },
     { expectedText: FAKE_404_PAGE_TEXT, pageName: 'NotFoundPage', pageRoute: AppRoutesEnum.NotFound }
   ])('should correct render by $pageName route', async ({ expectedText, pageRoute }) => {
+    vi.spyOn(await import('@app/routing/page-layout'), 'PageLayout').mockImplementation(PageLayoutMock);
     vi.spyOn(await import('@pages/main-page'), 'default').mockImplementation(MainPageMock);
     vi.spyOn(await import('@pages/not-found-page'), 'default').mockImplementation(NotFoundPageMock);
     vi.spyOn(await import('@pages/product-page'), 'default').mockImplementation(ProductPageMock);

@@ -13,6 +13,7 @@ import { PHONE_MASK } from '@features/call-item-modal-content/config/const';
 import { Order } from '@entities/order';
 import { createOrderByFormData } from '@features/call-item-modal-content/lib/create-order';
 import classNames from 'classnames';
+import { SvgIcon } from '@shared/ui/svg-icon';
 
 type CallItemModalContentProps = Classed<{
   product: Product;
@@ -74,9 +75,7 @@ export function CallItemModalContent({ product, className, onCreateOrder }: Call
         <label>
           <span className='custom-input__label'>
             Телефон
-            <svg width={REQUIRED_ICON_SIZE.width} height={REQUIRED_ICON_SIZE.height} aria-hidden>
-              <use xlinkHref='#icon-snowflake' />
-            </svg>
+            <SvgIcon size={REQUIRED_ICON_SIZE} xlinkHref='#icon-snowflake' />
           </span>
           <MaskedInput
             type='tel'
@@ -91,9 +90,7 @@ export function CallItemModalContent({ product, className, onCreateOrder }: Call
       </div>
       <div className='modal__buttons'>
         <button className='btn btn--purple modal__btn modal__btn--fit-width' type='submit' disabled={!(isValid || isSubmitting)}>
-          <svg width={SUBMIT_ICON_SIZE.width} height={SUBMIT_ICON_SIZE.height} aria-hidden>
-            <use xlinkHref='#icon-add-basket' />
-          </svg>
+          <SvgIcon size={SUBMIT_ICON_SIZE} xlinkHref='#icon-add-basket' />
           Заказать
         </button>
       </div>

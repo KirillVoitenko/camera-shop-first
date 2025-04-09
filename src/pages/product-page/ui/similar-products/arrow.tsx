@@ -1,4 +1,5 @@
 import { ElementSize } from '@shared/model/html';
+import { SvgIcon } from '@shared/ui/svg-icon';
 import classNames from 'classnames';
 import { CSSProperties, JSX, forwardRef, PropsWithRef } from 'react';
 
@@ -38,9 +39,7 @@ export const Arrow = forwardRef<HTMLButtonElement, ArrowProps>(({ type }, ref): 
       style={BUTTON_STYLES}
       data-testid='swiper-arrow'
     >
-      <svg width={ARROW_SIZE.width} height={ARROW_SIZE.height} aria-hidden>
-        <use xlinkHref='#icon-arrow' />
-      </svg>
+      <SvgIcon size={ARROW_SIZE} xlinkHref='#icon-arrow' />
     </button>
   );
 });

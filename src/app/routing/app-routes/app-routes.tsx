@@ -1,7 +1,7 @@
 import { JSX, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AppRoutesEnum } from '@shared/model/enums';
-import { PageLayout } from '../page-layout/ui/page-layout';
+import { PageLayout } from '../page-layout';
 import { Fallback } from '../fallback';
 
 const MainPage = lazy(() => import('@pages/main-page'));

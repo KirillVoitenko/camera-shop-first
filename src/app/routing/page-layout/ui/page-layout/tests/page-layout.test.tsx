@@ -7,6 +7,12 @@ import {
 } from '@app/routing/page-layout/config/const';
 import { withRouter } from '@test-utills/wrappers';
 
+vi.mock('@features/product-search', () => ({
+  ProductSearch: () => <div>Product search mock</div>
+}));
+
+const PRODUCT_SEARCH_TEXT = 'Product search mock';
+
 describe('Component \'PageLayout\'', () => {
   it('should render \'Layout\' component', () => {
     const screen = render(withRouter(<PageLayout />));
@@ -21,5 +27,10 @@ describe('Component \'PageLayout\'', () => {
   it('should render \'PageFooter\' component', () => {
     const screen = render(withRouter(<PageLayout />));
     expect(screen.getByTestId(PAGE_FOOTER_TEST_ID)).toBeInTheDocument();
+  });
+
+  it('should render \'ProductSearch\' component', () => {
+    const screen = render(withRouter(<PageLayout />));
+    expect(screen.getByText(PRODUCT_SEARCH_TEXT)).toBeInTheDocument();
   });
 });

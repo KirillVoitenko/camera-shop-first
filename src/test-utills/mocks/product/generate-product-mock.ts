@@ -4,7 +4,7 @@ import faker from 'faker';
 export const generateProductMock = (): Product => ({
   category: ProductCategory.PhotoCamera,
   description: faker.lorem.sentence(),
-  id: faker.datatype.number(),
+  id: faker.datatype.number(faker.datatype.number({min: 3, max: 10})),
   level: RecommendedUserLevel.Beginner,
   name: faker.lorem.word(),
   previewImg: faker.image.imageUrl(),

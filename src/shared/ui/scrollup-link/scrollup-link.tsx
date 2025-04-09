@@ -2,6 +2,7 @@ import { ElementSize } from '@shared/model/html';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
 import { JSX, MouseEventHandler } from 'react';
+import { SvgIcon } from '../svg-icon';
 
 type ScrollupLinkProps = Classed<{
   elementId: string;
@@ -29,9 +30,7 @@ export function ScrollupLink({ elementId, className }: ScrollupLinkProps): JSX.E
 
   return (
     <a className={linkClassName} href='#' onClick={linkClickHandler} data-testid='scrollup-link'>
-      <svg width={BUTTON_SIZE.width} height={BUTTON_SIZE.height} aria-hidden>
-        <use xlinkHref='#icon-arrow2'/>
-      </svg>
+      <SvgIcon size={BUTTON_SIZE} xlinkHref='#icon-arrow2' />
     </a>
   );
 }

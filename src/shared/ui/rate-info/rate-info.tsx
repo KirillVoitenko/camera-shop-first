@@ -2,6 +2,7 @@ import { ElementSize } from '@shared/model/html';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
 import { JSX } from 'react';
+import { SvgIcon } from '../svg-icon';
 
 type RateInfoProps = Classed<{
   averageRating: number;
@@ -22,9 +23,7 @@ export function RateInfo({ averageRating, reviewsCount, className, iconSize = DE
       {Array.from({ length: averageRating }).map((_, index) => {
         const starKey = `$rating-star-${index}`;
         return (
-          <svg key={starKey} width={iconSize.width} height={iconSize.height} aria-hidden data-testid='rating-star-icon'>
-            <use xlinkHref='#icon-full-star' />
-          </svg>
+          <SvgIcon key={starKey} size={iconSize} xlinkHref='#icon-full-star' testId='rating-star-icon' />
         );
       })}
 

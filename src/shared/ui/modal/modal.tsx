@@ -1,10 +1,12 @@
-import { FC, PropsWithChildren, useCallback, useEffect } from 'react';
+import { FC, MouseEventHandler, PropsWithChildren, useCallback, useEffect } from 'react';
 import classNames from 'classnames';
 import { Classed } from '@shared/model/style-types';
 import { ElementSize } from '@shared/model/html';
 import { Content } from './content';
 import { CLOSE_BUTTON_TEST_ID, MODAL_CONTAINER_TEST_ID, MODAL_OVERLAY_TEST_ID } from './const';
 import { FocusTrap } from 'focus-trap-react';
+import { SvgIcon } from '../svg-icon';
+import { MouseButtonEnum } from '@shared/model/enums';
 
 type ModalExtensions = {
   Content: typeof Content;
@@ -33,6 +35,15 @@ export const Modal: FC<ModalProps> & ModalExtensions = ({ onClose, className, ch
     [onClose]
   );
   const modalContainerClassName = classNames('modal', className, { 'is-active': isOpened });
+
+  const modalOverlayMouseUpHandler: MouseEventHandler<HTMLDivElement> = useCallback(
+    (event) => {
+      if (event.button === MouseButtonEnum.Main) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   const documentKeydownHandler = useCallback(
     (event: KeyboardEvent) => {
@@ -64,7 +75,7 @@ export const Modal: FC<ModalProps> & ModalExtensions = ({ onClose, className, ch
       {isOpened && (
         <div className={modalContainerClassName} data-testid={MODAL_CONTAINER_TEST_ID}>
           <div className='modal__wrapper'>
-            <div className='modal__overlay' onClick={modalCloseButtonClickHandler} data-testid={MODAL_OVERLAY_TEST_ID}></div>
+            <div className='modal__overlay' onMouseUp={modalOverlayMouseUpHandler} data-testid={MODAL_OVERLAY_TEST_ID}></div>
             <FocusTrap>
               <div className='modal__content'>
                 {children}
@@ -75,14 +86,12 @@ export const Modal: FC<ModalProps> & ModalExtensions = ({ onClose, className, ch
                   onClick={modalCloseButtonClickHandler}
                   data-testid={CLOSE_BUTTON_TEST_ID}
                 >
-                  <svg width={CLOSE_BUTTON_SIZE.width} height={CLOSE_BUTTON_SIZE.height} aria-hidden>
-                    <use xlinkHref='#icon-close'></use>
-                  </svg>
+                  <SvgIcon size={CLOSE_BUTTON_SIZE} xlinkHref='#icon-close' />
                 </button>
               </div>
             </FocusTrap>
           </div>
-        </div>
+        </div >
       )}
     </>
   );

@@ -75,3 +75,7 @@
   justify-content: end;
   padding: 0 40px;
 }
+
+.form-search__select-item.is-active {
+  background-color: #f4f4fc;
+}

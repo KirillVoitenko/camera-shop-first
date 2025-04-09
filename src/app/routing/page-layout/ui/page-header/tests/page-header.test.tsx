@@ -7,6 +7,10 @@ import {
   LOGO_TEST_ID
 } from '@app/routing/page-layout/config/const';
 
+vi.mock('@features/product-search', () => ({
+  ProductSearch: vi.fn(() => <input placeholder='Поиск по сайту' />)
+}));
+
 describe('Component \'PageHeader\'', () => {
   it('should correct render', () => {
     const screen = render(withRouter(<PageHeader />));
@@ -24,5 +28,12 @@ describe('Component \'PageHeader\'', () => {
     const screen = render(withRouter(<PageHeader />));
 
     expect(screen.getByTestId(HEADER_NAVIGATION_TEST_ID)).toBeInTheDocument();
+  });
+
+  it('should render \'ProductSearch\' component', () => {
+    const searchPlaceholder = 'Поиск по сайту';
+    const screen = render(withRouter(<PageHeader />));
+
+    expect(screen.getByPlaceholderText(searchPlaceholder)).toBeInTheDocument();
   });
 });
