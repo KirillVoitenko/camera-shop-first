@@ -51,7 +51,7 @@ describe('Component \'ProductSearch\'', () => {
     const inputString = STATE_MOCK.products?.products[0]?.name ?? '';
     const { wrappedComponent } = withStore(<ProductSearch />, STATE_MOCK, [], history);
     const screen = render(wrappedComponent);
-    const expectedCount = (STATE_MOCK.products?.products ?? []).filter((current) => current.name === inputString).length;
+    const expectedCount = (STATE_MOCK.products?.products ?? []).filter((current) => current.name.toLowerCase().includes(inputString.toLowerCase())).length;
 
     await userEvent.type(
       screen.getByPlaceholderText(PLACEHOLDER_PATTERN),

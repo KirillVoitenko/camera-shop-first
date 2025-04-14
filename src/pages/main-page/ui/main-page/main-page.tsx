@@ -1,7 +1,6 @@
 import { Layout } from '@shared/ui/layout';
 import { withBrowserTitle } from '@shared/lib/with-browser-title';
 import { PAGE_TITLE } from '@pages/main-page/config/const';
-import { ProductsList } from '@features/products-list';
 import { Modal } from '@shared/ui/modal';
 import { useState } from 'react';
 import { Nullable } from '@shared/model/utill-types';
@@ -14,6 +13,7 @@ import { useAsyncThunkDispatch } from '@shared/lib/store/use-async-thunk-dispatc
 import { toast } from 'react-toastify';
 import { TOAST_CONTAINER_ID } from '@shared/ui/toast-container';
 import { PromosSlider } from '../promos-slider';
+import { Catalog } from '@widgets/catalog';
 
 function MainPage() {
   const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
@@ -52,9 +52,7 @@ function MainPage() {
           <h1 className='title title--h2'>Каталог фото- и видеотехники</h1>
           <div className='page-content__columns'>
             <Banner />
-            <div className='catalog__content'>
-              <ProductsList onBuyButtonClick={buyButtonClickHandler} />
-            </div>
+            <Catalog onBuyProductClick={buyButtonClickHandler} />
           </div>
         </div>
       </section>
