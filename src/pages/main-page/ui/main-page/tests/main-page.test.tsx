@@ -4,7 +4,6 @@ import { RootState } from '@shared/model/redux';
 import { generateProductMock, generatePromoProductMock } from '@test-utills/mocks/product';
 import faker from 'faker';
 import { MainPageWithTitle as MainPage } from '../main-page';
-import { BANNER_TEST_ID } from '@pages/main-page/config/const';
 
 const INITIAL_STATE: Partial<RootState> = {
   products: {
@@ -29,7 +28,6 @@ describe('Component \'MainPage\'', () => {
     const screen = render(componentRender());
 
     expect(screen.getByTestId(LAYOUT_CONTENT_TEST_ID)).toBeInTheDocument();
-    expect(screen.getByTestId(BANNER_TEST_ID)).toBeInTheDocument();
     expect(screen.getByTestId(PRODUCT_LIST_TEST_ID)).toBeInTheDocument();
     expect(screen.getByText(FAKE_PROMOS_SLIDER_TEXT)).toBeInTheDocument();
   });

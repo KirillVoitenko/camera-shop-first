@@ -14,6 +14,8 @@ import {
 import { ShortProductCard } from './ui/short-product-card';
 import { FullProductCard } from './ui/full-product-card';
 import { BasketProductCard } from './ui/basket-product-card';
+import { isEqualsProductsArray } from './lib/compare-products';
+import { getPriceLimitsByProducts, PriceLimit } from './lib/utills';
 
 export {
   Product,
@@ -27,5 +29,8 @@ export {
   promoProductsDataSelector,
   ShortProductCard,
   FullProductCard,
-  BasketProductCard
+  BasketProductCard,
+  isEqualsProductsArray,
+  getPriceLimitsByProducts,
+  type PriceLimit
 };

@@ -79,3 +79,9 @@
 .form-search__select-item.is-active {
   background-color: #f4f4fc;
 }
+
+.filter-price-error-message {
+  top: 40px;
+  font-size: .7em;
+  line-height: .95;
+}

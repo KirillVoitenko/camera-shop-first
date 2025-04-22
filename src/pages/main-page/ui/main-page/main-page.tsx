@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { Nullable } from '@shared/model/utill-types';
 import { Product } from '@entities/product';
 import { AppRoutesEnum } from '@shared/model/enums';
-import { Banner } from '../banner';
 import { CallItemModalContent } from '@features/call-item-modal-content';
 import { createOrderFetchAction } from '@entities/order';
 import { useAsyncThunkDispatch } from '@shared/lib/store/use-async-thunk-dispatch';
@@ -51,7 +50,6 @@ function MainPage() {
         <div className='container'>
           <h1 className='title title--h2'>Каталог фото- и видеотехники</h1>
           <div className='page-content__columns'>
-            <Banner />
             <Catalog onBuyProductClick={buyButtonClickHandler} />
           </div>
         </div>

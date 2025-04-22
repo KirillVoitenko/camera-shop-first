@@ -4,6 +4,7 @@ import { ProductsSorting } from '@features/products-sorting';
 import { useAppSelector } from '@shared/lib/store';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
+import { ProductsFilter } from '@features/products-filter';
 import { JSX } from 'react';
 
 type CatalogProps = Classed<{
@@ -15,14 +16,21 @@ export function Catalog({ className, onBuyProductClick }: CatalogProps): JSX.Ele
 
   const containerClassName = classNames('catalog__content', className);
   return (
-    <div className={containerClassName}>
-      <ProductsSorting
-        products={products}
-      >
-        {(sortedProducts) => (
-          <ProductsList onBuyButtonClick={onBuyProductClick} products={sortedProducts} />
-        )}
-      </ProductsSorting>
-    </div>
+    <ProductsFilter
+      products={products}
+    >
+      {(filteredProducts) => (
+        <div className={containerClassName}>
+          <ProductsSorting
+            products={filteredProducts}
+          >
+            {(sortedProducts) => (
+              <ProductsList onBuyButtonClick={onBuyProductClick} products={sortedProducts} />
+            )}
+          </ProductsSorting>
+        </div>
+      )}
+    </ProductsFilter>
+
   );
 }
