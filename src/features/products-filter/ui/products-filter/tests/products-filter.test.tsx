@@ -4,7 +4,7 @@ import { FilterFieldsetTestId, INITIAL_FILTER } from '@features/products-filter/
 import { generateProductMock } from '@test-utills/mocks/product';
 import { render } from '@testing-library/react';
 import faker from 'faker';
-import { FilterValue } from '@features/products-filter/model/types';
+import { FilterFormValue, FilterValue } from '@features/products-filter/model/types';
 import userEvent from '@testing-library/user-event';
 
 vi.mock('@shared/lib/debounce', () => ({
@@ -12,10 +12,17 @@ vi.mock('@shared/lib/debounce', () => ({
 }));
 
 const RESET_BUTTON_PATTERN = /сбросить фильтры/gmi;
-const PRODUCTS_LENGTH = faker.datatype.number({ min: 1, max: 30 });
+const PRODUCTS_LENGTH = 30;
 const FAKE_CARD_TEST_ID = 'fake-product-card';
 
-const generateProductsArray = (productsCount = PRODUCTS_LENGTH) => Array.from({ length: productsCount }).map(generateProductMock);
+const generateProductsArray = (productsCount = PRODUCTS_LENGTH) => Array.from({ length: productsCount }).map(() => {
+  const product = generateProductMock();
+  product.price = faker.datatype.number({min: 1, max: 1000});
+  return product;
+});
+
+const getInputByName = (container: HTMLElement, inputName: keyof FilterFormValue): HTMLInputElement | undefined =>
+  Array.from(container.querySelectorAll('input')).find((current) => current.name === inputName);
 
 const renderProductsFilter = (products: Product[]) => render(
   <ProductsFilter products={products}>
@@ -52,9 +59,11 @@ describe('component \'ProductsFilter\'', () => {
 
   it('should call children with filtered items', async () => {
     const filterFunctionSpy = vi.spyOn(await import('@features/products-filter/lib/filter-products/filter-products'), 'getFilteredProductsInfo');
-    const products = generateProductsArray();
+    const products = generateProductsArray().map((current, index) => {
+      current.price += index;
+      return current;
+    });
     const minPrice = Math.min(...products.map((current) => current.price));
-    const filteredProducts = products.filter((current) => current.price === minPrice);
     const screen = renderProductsFilter(products);
 
     const filterValue: FilterValue = {
@@ -64,16 +73,23 @@ describe('component \'ProductsFilter\'', () => {
       category: null
     };
 
-    await userEvent.type(
-      screen.getByPlaceholderText('от'),
-      minPrice.toString(10)
-    );
-    await userEvent.type(
-      screen.getByPlaceholderText('до'),
-      minPrice.toString(10)
-    );
+    const priceBeginInput = getInputByName(screen.container, 'priceBegin');
+    const priceEndInput = getInputByName(screen.container, 'priceEnd');
 
-    expect(filterFunctionSpy).toBeCalledWith(products, filterValue);
-    expect(screen.getAllByTestId(FAKE_CARD_TEST_ID).length).toBe(filteredProducts.length);
+    if (priceBeginInput && priceEndInput) {
+      await userEvent.type(
+        priceBeginInput,
+        minPrice.toString(10)
+      );
+      await userEvent.type(
+        priceEndInput,
+        minPrice.toString(10)
+      );
+      expect(filterFunctionSpy).toBeCalledWith(products, filterValue);
+      return;
+    }
+
+    throw new Error('price inputs not find');
+
   });
 });

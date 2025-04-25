@@ -5,6 +5,7 @@ import { useAppSelector } from '@shared/lib/store';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
 import { ProductsFilter } from '@features/products-filter';
+import { Pagination } from '@features/pagination';
 import { JSX } from 'react';
 
 type CatalogProps = Classed<{
@@ -25,7 +26,13 @@ export function Catalog({ className, onBuyProductClick }: CatalogProps): JSX.Ele
             products={filteredProducts}
           >
             {(sortedProducts) => (
-              <ProductsList onBuyButtonClick={onBuyProductClick} products={sortedProducts} />
+              <Pagination
+                items={sortedProducts}
+              >
+                {(itemsByPage) => (
+                  <ProductsList onBuyButtonClick={onBuyProductClick} products={itemsByPage} />
+                )}
+              </Pagination>
             )}
           </ProductsSorting>
         </div>
