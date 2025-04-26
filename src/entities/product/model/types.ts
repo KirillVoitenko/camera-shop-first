@@ -40,3 +40,9 @@ export interface PromoProduct extends ProductPreview {
   id: number;
   name: string;
 }
+
+export type CardTab = 'characteristics' | 'description';
+
+export type ProductCardSearchParams = {
+  activeTab: CardTab;
+};

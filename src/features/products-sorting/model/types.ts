@@ -5,3 +5,5 @@ export type ProductsSortingValue = {
   type: SortType;
   vector: SortVector;
 }
+
+export type ProductSortingPageParams = ProductsSortingValue;

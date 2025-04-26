@@ -1,11 +1,16 @@
 import { Product } from '@entities/product';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
-import { ChangeEventHandler, JSX, useState } from 'react';
+import { ChangeEventHandler, JSX } from 'react';
 import { ProductsSortingValue } from '@features/products-sorting/model/types';
 import { sortProducts } from '@features/products-sorting/lib/sorting-functions';
 import { SvgIcon } from '@shared/ui/svg-icon';
 import { INITIAL_SORTING, SORTING_CONTAINER_TEST_ID, SortRadioTestId, VECTOR_SORTING_ICON_SIZE } from '@features/products-sorting/config/const';
+import { usePageSearchParams } from '@shared/lib/use-page-search-params';
+import {
+  convertSortingParamsToUrlSearchParams,
+  convertUrlSearchParamsToSortingParams
+} from '@features/products-sorting/lib/sorting-page-params-converter';
 
 type ProductsSortingProps = Classed<{
   products: Product[];
@@ -13,15 +18,20 @@ type ProductsSortingProps = Classed<{
 }>
 
 export function ProductsSorting({ children, products, className }: ProductsSortingProps): JSX.Element {
-  const [sorting, setSorting] = useState<ProductsSortingValue>(INITIAL_SORTING);
+  const {getPageSearchParams, changePageSearchParams} = usePageSearchParams(
+    INITIAL_SORTING,
+    convertSortingParamsToUrlSearchParams,
+    convertUrlSearchParamsToSortingParams
+  );
 
   const containerClassName = classNames('catalog-sort', className);
 
+  const sortingValue = getPageSearchParams();
+
   const formChangeHandler = <TFormField extends keyof ProductsSortingValue>(field: TFormField, value: ProductsSortingValue[TFormField]) => {
-    setSorting((prev) => ({
-      ...prev,
-      [field]: value
-    }));
+    changePageSearchParams({
+      ...sortingValue,
+      [field]: value});
   };
 
   const formRadioChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -46,7 +56,7 @@ export function ProductsSorting({ children, products, className }: ProductsSorti
                   id='sortPrice'
                   name='type'
                   value='PRICE'
-                  checked={sorting.type === 'PRICE'}
+                  checked={sortingValue.type === 'PRICE'}
                   onChange={formRadioChangeHandler}
                   data-testid={SortRadioTestId.Price}
                 />
@@ -59,7 +69,7 @@ export function ProductsSorting({ children, products, className }: ProductsSorti
                   name='type'
                   value='POPULAR'
                   onChange={formRadioChangeHandler}
-                  checked={sorting.type === 'POPULAR'}
+                  checked={sortingValue.type === 'POPULAR'}
                   data-testid={SortRadioTestId.Rating}
                 />
                 <label htmlFor='sortPopular'>по популярности</label>
@@ -72,7 +82,7 @@ export function ProductsSorting({ children, products, className }: ProductsSorti
                   id='up'
                   name='vector'
                   value='UP'
-                  checked={sorting.vector === 'UP'}
+                  checked={sortingValue.vector === 'UP'}
                   aria-label='По возрастанию'
                   onChange={formRadioChangeHandler}
                   data-testid={SortRadioTestId.SortUp}
@@ -90,7 +100,7 @@ export function ProductsSorting({ children, products, className }: ProductsSorti
                   id='down'
                   name='vector'
                   value='DOWN'
-                  checked={sorting.vector === 'DOWN'}
+                  checked={sortingValue.vector === 'DOWN'}
                   aria-label='По убыванию'
                   onChange={formRadioChangeHandler}
                   data-testid={SortRadioTestId.SortDown}
@@ -106,7 +116,7 @@ export function ProductsSorting({ children, products, className }: ProductsSorti
           </div>
         </form>
       </div>
-      {children(sortProducts(products, sorting))}
+      {children(sortProducts(products, sortingValue))}
     </>
   );
 }

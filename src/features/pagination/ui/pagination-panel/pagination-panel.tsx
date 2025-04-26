@@ -1,4 +1,4 @@
-import { INITIAL_PAGE, PaginationTestId } from '@features/pagination/config/const';
+import { INITIAL_PAGE_PARAMS, PaginationTestId } from '@features/pagination/config/const';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
 import { JSX } from 'react';
@@ -21,14 +21,14 @@ export function PaginationPanel({
   const listClassName = classNames('pagination__list', className);
   const allPages = Array.from({length: pagesCount}).map((_, index) => index + 1);
   const firstDisplayedPageNumber = pagesCount - activePage >= maxRenderedLinks - 1
-    ? Math.max(activePage - 1, INITIAL_PAGE)
+    ? Math.max(activePage - 1, INITIAL_PAGE_PARAMS.page)
     : pagesCount - maxRenderedLinks + 1;
   const firstDisplayedPageIndex = Math.max(0, allPages.findIndex((current) => current === firstDisplayedPageNumber));
   const displayedPages = allPages.slice(firstDisplayedPageIndex, firstDisplayedPageIndex + maxRenderedLinks);
 
   return (
     <ul className={listClassName} data-testid={PaginationTestId.Panel}>
-      {(activePage > INITIAL_PAGE && pagesCount >= maxRenderedLinks) && (
+      {(activePage > INITIAL_PAGE_PARAMS.page && pagesCount >= maxRenderedLinks) && (
         <PaginationPanelItem
           description='Назад'
           onClick={onLinkClick}

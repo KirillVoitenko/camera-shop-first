@@ -1,5 +1,5 @@
 import { ElementSize } from '@shared/model/html';
-import { ProductsSortingValue } from '../model/types';
+import { ProductsSortingValue, SortType, SortVector } from '../model/types';
 
 export const INITIAL_SORTING: ProductsSortingValue = {
   type: 'PRICE',
@@ -19,3 +19,6 @@ export enum SortRadioTestId {
   SortUp = 'sort-up',
   SortDown = 'sort-down'
 }
+
+export const SUPPORTED_SORTING_TYPES: SortType[] = ['PRICE', 'POPULAR'];
+export const SUPPORTED_SORTING_VECTORS: SortVector[] = ['DOWN', 'UP'];

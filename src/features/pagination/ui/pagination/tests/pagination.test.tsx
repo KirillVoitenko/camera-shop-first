@@ -1,4 +1,4 @@
-import { INITIAL_PAGE, MAX_ITEMS_IN_ONE_PAGE, PaginationTestId } from '@features/pagination/config/const';
+import { INITIAL_PAGE_PARAMS, MAX_ITEMS_IN_ONE_PAGE, PaginationTestId } from '@features/pagination/config/const';
 import { Pagination } from '../pagination';
 import { render } from '@testing-library/react';
 import { getItemsByPage } from '@features/pagination/lib/get-items-by-page';
@@ -51,7 +51,7 @@ describe('component \'Pagination\'', () => {
 
   it('should call \'getItemsByPage\' function', async () => {
     const fakeItems = generateFakeItems();
-    const getItemsByPageParams: Parameters<typeof getItemsByPage<number>> = [fakeItems, INITIAL_PAGE, MAX_ITEMS_IN_ONE_PAGE];
+    const getItemsByPageParams: Parameters<typeof getItemsByPage<number>> = [fakeItems, INITIAL_PAGE_PARAMS.page, MAX_ITEMS_IN_ONE_PAGE];
     const getItemsSpy = vi.spyOn(await import('@features/pagination/lib/get-items-by-page'), 'getItemsByPage');
     render(
       <Pagination

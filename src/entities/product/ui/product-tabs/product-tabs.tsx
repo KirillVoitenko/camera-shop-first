@@ -1,7 +1,10 @@
 import { Product } from '@entities/product/model/types';
 import classNames from 'classnames';
-import { JSX, useState } from 'react';
+import { JSX } from 'react';
 import { ProductCharacteristics } from '../product-characteristics';
+import { usePageSearchParams } from '@shared/lib/use-page-search-params';
+import { INITIAL_PRODUCT_TAB_PARAMS } from '@entities/product/config/const';
+import { convertSearchParamsToTabParamsObject, convertTabParamsObjectToSearchParams } from '@entities/product/lib/convert-product-tab-params';
 
 type CardTab = 'characteristics' | 'description';
 
@@ -18,7 +21,20 @@ const getTabStyles = (isActiveTab: boolean, baseSelector: string) => classNames(
 );
 
 export function ProductTabs({ product, selectedTab = 'characteristics' }: ProductTabsProps): JSX.Element {
-  const [activeTab, setActiveTab] = useState<CardTab>(selectedTab);
+  //const [activeTab, setActiveTab] = useState<CardTab>(selectedTab);
+  const { changePageSearchParams, getConcretePageSearchParam } = usePageSearchParams(
+    { ...INITIAL_PRODUCT_TAB_PARAMS, activeTab: selectedTab },
+    convertTabParamsObjectToSearchParams,
+    convertSearchParamsToTabParamsObject
+  );
+
+  const activeTab = getConcretePageSearchParam('activeTab');
+
+  const tabChangeHandler = (tabName: CardTab) => {
+    if (activeTab !== tabName) {
+      changePageSearchParams({activeTab: tabName});
+    }
+  };
 
   return (
     <div className='tabs product__tabs' data-testid='product-tabs-container'>
@@ -26,14 +42,14 @@ export function ProductTabs({ product, selectedTab = 'characteristics' }: Produc
         <button
           className={getTabStyles(activeTab === 'characteristics', 'tabs__control')}
           type='button'
-          onClick={() => setActiveTab('characteristics')}
+          onClick={() => tabChangeHandler('characteristics')}
         >
           Характеристики
         </button>
         <button
           className={getTabStyles(activeTab === 'description', 'tabs__control')}
           type='button'
-          onClick={() => setActiveTab('description')}
+          onClick={() => tabChangeHandler('description')}
         >
           Описание
         </button>

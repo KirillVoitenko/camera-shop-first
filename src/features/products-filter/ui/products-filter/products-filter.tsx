@@ -22,7 +22,11 @@ type ProductsFilterProps = Classed<{
   children: (filteredProducts: Product[]) => JSX.Element;
 }>
 
-export function ProductsFilter({ products, className, children }: ProductsFilterProps): JSX.Element {
+export function ProductsFilter({
+  products,
+  className,
+  children,
+}: ProductsFilterProps): JSX.Element {
   const [filteredProductsInfo, setFilteredProductsInfo] = useState<FilteredProductsInfo>({
     priceLimit: {
       max: null,
