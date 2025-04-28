@@ -7,6 +7,7 @@ import { JSX } from 'react';
 import { SortRadioTestId } from '@features/products-sorting/config/const';
 import { ProductsSortingValue } from '@features/products-sorting/model/types';
 import userEvent from '@testing-library/user-event';
+import { withRouter } from '@test-utills/wrappers';
 
 const PRODUCTS_MOCK = Array.from({ length: faker.datatype.number({ min: 1, max: 20 }) }).map(generateProductMock);
 const FAKE_PRODUCT_ITEM_TEST_ID = 'fake-product-item';
@@ -30,16 +31,17 @@ const FakeProductItem = ({ product }: FakeProductItemProps): JSX.Element => (
 );
 
 const renderScreen = () => render(
-  <ProductsSorting
-    products={PRODUCTS_MOCK}
-  >
-    {(sortedProducts) => (
-      <div>
-        {sortedProducts.map((current) => <FakeProductItem product={current} key={current.id} />)}
-      </div>
-    )}
-  </ProductsSorting>
-);
+  withRouter(
+    <ProductsSorting
+      products={PRODUCTS_MOCK}
+    >
+      {(sortedProducts) => (
+        <div>
+          {sortedProducts.map((current) => <FakeProductItem product={current} key={current.id} />)}
+        </div>
+      )}
+    </ProductsSorting>
+  ));
 
 type SortTestEachArg = {
   clickedRadioTestIds: [SortRadioTestId, SortRadioTestId];
@@ -59,15 +61,15 @@ describe('Component \'ProductsSorting\'', () => {
   });
 
   it.each<SortTestEachArg>([
-    {caseName: 'price up', clickedRadioTestIds: [SortRadioTestId.Price, SortRadioTestId.SortUp], expectedSortingValue: {type: 'PRICE', vector: 'UP'}},
-    {caseName: 'price down', clickedRadioTestIds: [SortRadioTestId.Price, SortRadioTestId.SortDown], expectedSortingValue: {type: 'PRICE', vector: 'DOWN'}},
-    {caseName: 'rating up', clickedRadioTestIds: [SortRadioTestId.Rating, SortRadioTestId.SortUp], expectedSortingValue: {type: 'POPULAR', vector: 'UP'}},
-    {caseName: 'rating up', clickedRadioTestIds: [SortRadioTestId.Rating, SortRadioTestId.SortDown], expectedSortingValue: {type: 'POPULAR', vector: 'DOWN'}},
-  ])('should sort by $caseName', async ({clickedRadioTestIds, expectedSortingValue}) => {
+    { caseName: 'price up', clickedRadioTestIds: [SortRadioTestId.Price, SortRadioTestId.SortUp], expectedSortingValue: { type: 'PRICE', vector: 'UP' } },
+    { caseName: 'price down', clickedRadioTestIds: [SortRadioTestId.Price, SortRadioTestId.SortDown], expectedSortingValue: { type: 'PRICE', vector: 'DOWN' } },
+    { caseName: 'rating up', clickedRadioTestIds: [SortRadioTestId.Rating, SortRadioTestId.SortUp], expectedSortingValue: { type: 'POPULAR', vector: 'UP' } },
+    { caseName: 'rating up', clickedRadioTestIds: [SortRadioTestId.Rating, SortRadioTestId.SortDown], expectedSortingValue: { type: 'POPULAR', vector: 'DOWN' } },
+  ])('should sort by $caseName', async ({ clickedRadioTestIds, expectedSortingValue }) => {
     const sortSpy = vi.spyOn(await import('@features/products-sorting/lib/sorting-functions'), 'sortProducts');
     const screen = renderScreen();
 
-    for(let radioIndex = 0; radioIndex < clickedRadioTestIds.length; radioIndex++) {
+    for (let radioIndex = 0; radioIndex < clickedRadioTestIds.length; radioIndex++) {
       await userEvent.click(screen.getByTestId(clickedRadioTestIds[radioIndex]));
     }
 

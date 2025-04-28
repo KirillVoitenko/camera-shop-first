@@ -5,6 +5,7 @@ import { MAX_PAGE_LINKS } from '@features/pagination/config/const';
 
 const PREVIOUS_PAGE_LINK_PATTERN = /назад/gmi;
 const NEXT_PAGE_LINK_PATTERN = /далее/gmi;
+const PAGE_LINK_PATTERN = /^\d*$/gm;
 
 describe('component \'PaginationPanel\'', () => {
   it('should correct render if max rendered links >= pages count and first page is active', () => {
@@ -19,7 +20,7 @@ describe('component \'PaginationPanel\'', () => {
       />
     );
 
-    expect(screen.getAllByText(/^\d$/gmi, {selector: 'a'}).length).toBe(pagesCount);
+    expect(screen.getAllByText(PAGE_LINK_PATTERN, {selector: 'a'}).length).toBe(pagesCount);
     expect(screen.queryByText(PREVIOUS_PAGE_LINK_PATTERN)).toBeNull();
     expect(screen.queryByText(NEXT_PAGE_LINK_PATTERN)).toBeNull();
   });
@@ -36,7 +37,7 @@ describe('component \'PaginationPanel\'', () => {
       />
     );
 
-    expect(screen.getAllByText(/^\d$/gmi, {selector: 'a'}).length).toBe(maxRenderedLinks);
+    expect(screen.getAllByText(PAGE_LINK_PATTERN, {selector: 'a'}).length).toBe(maxRenderedLinks);
     expect(screen.getByText(NEXT_PAGE_LINK_PATTERN, {selector: 'a'})).toBeInTheDocument();
     expect(screen.queryByText(PREVIOUS_PAGE_LINK_PATTERN, {selector: 'a'})).toBeNull();
   });
@@ -53,7 +54,7 @@ describe('component \'PaginationPanel\'', () => {
       />
     );
 
-    expect(screen.getAllByText(/^\d$/gmi, {selector: 'a'}).length).toBe(maxRenderedLinks);
+    expect(screen.getAllByText(PAGE_LINK_PATTERN, {selector: 'a.pagination__link'}).length).toBe(maxRenderedLinks);
     expect(screen.queryByText(NEXT_PAGE_LINK_PATTERN, {selector: 'a'})).toBeNull();
     expect(screen.getByText(PREVIOUS_PAGE_LINK_PATTERN, {selector: 'a'})).toBeInTheDocument();
   });
@@ -70,7 +71,7 @@ describe('component \'PaginationPanel\'', () => {
       />
     );
 
-    expect(screen.getAllByText(/^\d$/gmi, {selector: 'a'}).length).toBe(maxRenderedLinks);
+    expect(screen.getAllByText(PAGE_LINK_PATTERN, {selector: 'a'}).length).toBe(maxRenderedLinks);
     expect(screen.getByText(NEXT_PAGE_LINK_PATTERN, {selector: 'a'})).toBeInTheDocument();
     expect(screen.getByText(PREVIOUS_PAGE_LINK_PATTERN, {selector: 'a'})).toBeInTheDocument();
   });

@@ -17,27 +17,33 @@ export function Catalog({ className, onBuyProductClick }: CatalogProps): JSX.Ele
 
   const containerClassName = classNames('catalog__content', className);
   return (
-    <ProductsFilter
-      products={products}
-    >
-      {(filteredProducts) => (
-        <div className={containerClassName}>
-          <ProductsSorting
-            products={filteredProducts}
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {products.length === 0
+        ? <p>К сожалению все раскупили</p>
+        : (
+          <ProductsFilter
+            products={products}
           >
-            {(sortedProducts) => (
-              <Pagination
-                items={sortedProducts}
-              >
-                {(itemsByPage) => (
-                  <ProductsList onBuyButtonClick={onBuyProductClick} products={itemsByPage} />
-                )}
-              </Pagination>
+            {(filteredProducts) => (
+              <div className={containerClassName}>
+                <ProductsSorting
+                  products={filteredProducts}
+                >
+                  {(sortedProducts) => (
+                    <Pagination
+                      items={sortedProducts}
+                    >
+                      {(itemsByPage) => (
+                        <ProductsList onBuyButtonClick={onBuyProductClick} products={itemsByPage} />
+                      )}
+                    </Pagination>
+                  )}
+                </ProductsSorting>
+              </div>
             )}
-          </ProductsSorting>
-        </div>
-      )}
-    </ProductsFilter>
+          </ProductsFilter>)}
+    </>
 
   );
 }

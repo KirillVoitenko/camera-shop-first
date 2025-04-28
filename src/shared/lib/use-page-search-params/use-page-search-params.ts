@@ -20,10 +20,11 @@ export function usePageSearchParams<TParamsType extends BaseSearchParams = BaseS
 ): UsePageParamsReturn<TParamsType> {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const changePageSearchParams = (newParams: TParamsType) => {
+  const changePageSearchParams = (newParams: Partial<TParamsType>) => {
     const oldParamsObject = convertToParamsObject(searchParams, initialValue);
-    if (!isEqualsParamsObjects(oldParamsObject, newParams)) {
-      const convertedNewSearchParams = convertToSearchParams(newParams, initialValue);
+    const fullNewParamsObject: TParamsType = { ...oldParamsObject, ...newParams };
+    if (!isEqualsParamsObjects(oldParamsObject, fullNewParamsObject)) {
+      const convertedNewSearchParams = convertToSearchParams(fullNewParamsObject, initialValue);
       setSearchParams(mergeSearchParams(searchParams, convertedNewSearchParams));
     }
   };
