@@ -49,24 +49,17 @@ describe('hook \'usePageSearchParams\'', () => {
   //afterEach(cleanup);
 
   it('should return correct signature', () => {
-    const { result } = renderHook((props) => usePageSearchParams(
-      props.initialValue,
-      props.convertToSearchParams,
-      props.convertToParamsObject
+    const { result } = renderHook(() => usePageSearchParams(
+      TEST_PARAMS_INITIAL_VALUE,
+      convertTestParamsToSearchParams,
+      convertSearchParamsToTestParams
     ), {
-      wrapper,
-      initialProps: {
-        initialValue: TEST_PARAMS_INITIAL_VALUE,
-        convertToSearchParams: convertParamsSpyedFunction,
-        convertToParamsObject: convertSearchSpyedFunction
-      }
+      wrapper
     });
 
-    const { changePageSearchParams, getConcretePageSearchParam, getPageSearchParams } = result.current;
-
-    expect(typeof changePageSearchParams).toBe('function');
-    expect(typeof getConcretePageSearchParam).toBe('function');
-    expect(typeof getPageSearchParams).toBe('function');
+    expect(typeof result.current.changePageSearchParams).toBe('function');
+    expect(typeof result.current.getConcretePageSearchParam).toBe('function');
+    expect(typeof result.current.getPageSearchParams).toBe('function');
   });
 
   it('method \'getConcretePageSearchParam\' should return correct value', () => {

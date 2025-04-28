@@ -24,3 +24,5 @@ export enum FilterFieldsetTestId {
   Category = 'category-filter-fieldset',
   Level = 'level-filter-fieldset',
 }
+
+export const FILTER_FORM_TEST_ID = 'filter-form';

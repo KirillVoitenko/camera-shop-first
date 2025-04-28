@@ -38,10 +38,12 @@ export function usePageSearchParams<TParamsType extends BaseSearchParams = BaseS
 
   useEffect(
     () => {
-      if (searchParams.size === 0) {
-        setSearchParams(convertToSearchParams(initialValue, initialValue));
+      const paramsObjectKeys = Object.keys(initialValue);
+      const searchParamsKeys = Array.from(searchParams.keys());
+      if (!searchParamsKeys.some((current) => paramsObjectKeys.includes(current))) {
+        changePageSearchParams(initialValue);
       }
-    },
+    }
   );
 
   return {

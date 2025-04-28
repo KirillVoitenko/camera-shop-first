@@ -1,5 +1,5 @@
 import { isEqualsProductsArray, Product } from '@entities/product';
-import { INITIAL_FILTER } from '@features/products-filter/config/const';
+import { INITIAL_FILTER, FILTER_FORM_TEST_ID } from '@features/products-filter/config/const';
 import { FilterFormValue } from '@features/products-filter/model/types';
 import { Classed } from '@shared/model/style-types';
 import classNames from 'classnames';
@@ -27,13 +27,7 @@ export function ProductsFilter({
   className,
   children,
 }: ProductsFilterProps): JSX.Element {
-  const [filteredProductsInfo, setFilteredProductsInfo] = useState<FilteredProductsInfo>({
-    priceLimit: {
-      max: null,
-      min: null,
-    },
-    filteredProducts: products
-  });
+  const [filteredProductsInfo, setFilteredProductsInfo] = useState<FilteredProductsInfo>(getFilteredProductsInfo(products, adaptFormValueToFilterValue(INITIAL_FILTER)));
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilteredProducts = useCallback(debounce(setFilteredProductsInfo), [setFilteredProductsInfo]);
@@ -92,7 +86,7 @@ export function ProductsFilter({
     <>
       <div className={containerClassName}>
         <div className='catalog-filter'>
-          <form action='#'>
+          <form action='#' data-testid={FILTER_FORM_TEST_ID}>
             <h2 className='visually-hidden'>
               Фильтр
             </h2>

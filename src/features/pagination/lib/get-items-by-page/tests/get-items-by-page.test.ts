@@ -1,6 +1,6 @@
 import { Product } from '@entities/product';
 import { getItemsByPage } from '../get-items-by-page';
-import { INITIAL_PAGE, MAX_ITEMS_IN_ONE_PAGE } from '@features/pagination/config/const';
+import { INITIAL_PAGE_PARAMS, MAX_ITEMS_IN_ONE_PAGE } from '@features/pagination/config/const';
 import faker from 'faker';
 import { generateProductMock } from '@test-utills/mocks/product';
 
@@ -15,8 +15,8 @@ const generateProductsArray = () => Array.from({length: PRODUCTS_COUNT}).map(gen
 
 describe('function \'getItemsByPage\'', () => {
   it.each<EachArg>([
-    { activePage: INITIAL_PAGE, itemsCountByPage: MAX_ITEMS_IN_ONE_PAGE },
-    { activePage: faker.datatype.number({ min: INITIAL_PAGE + 1 }), itemsCountByPage: faker.datatype.number({ min: MAX_ITEMS_IN_ONE_PAGE + 1 }) },
+    { activePage: INITIAL_PAGE_PARAMS.page, itemsCountByPage: MAX_ITEMS_IN_ONE_PAGE },
+    { activePage: faker.datatype.number({ min: INITIAL_PAGE_PARAMS.page + 1 }), itemsCountByPage: faker.datatype.number({ min: MAX_ITEMS_IN_ONE_PAGE + 1 }) },
     { activePage: 0, itemsCountByPage: 0 },
   ])('should correct works by empty products, pageNumber=$activePage, pageItems=$itemsCountByPage',
     ({ activePage, itemsCountByPage }) => {
@@ -29,8 +29,8 @@ describe('function \'getItemsByPage\'', () => {
     });
 
   it.each<EachArg>([
-    { activePage: INITIAL_PAGE, itemsCountByPage: MAX_ITEMS_IN_ONE_PAGE },
-    { activePage: faker.datatype.number({ min: INITIAL_PAGE + 1 }), itemsCountByPage: faker.datatype.number({ min: MAX_ITEMS_IN_ONE_PAGE + 1 }) },
+    { activePage: INITIAL_PAGE_PARAMS.page, itemsCountByPage: MAX_ITEMS_IN_ONE_PAGE },
+    { activePage: faker.datatype.number({ min: INITIAL_PAGE_PARAMS.page + 1 }), itemsCountByPage: faker.datatype.number({ min: MAX_ITEMS_IN_ONE_PAGE + 1 }) },
     { activePage: 0, itemsCountByPage: 0 },
   ])('should correct works by filled products, pageNumber=$activePage, pageItems=$itemsCountByPage',
     ({ activePage, itemsCountByPage }) => {
