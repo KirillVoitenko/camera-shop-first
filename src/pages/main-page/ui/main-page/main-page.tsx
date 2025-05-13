@@ -1,39 +1,12 @@
 import { Layout } from '@shared/ui/layout';
 import { withBrowserTitle } from '@shared/lib/with-browser-title';
 import { PAGE_TITLE } from '@pages/main-page/config/const';
-import { Modal } from '@shared/ui/modal';
-import { useState } from 'react';
-import { Nullable } from '@shared/model/utill-types';
-import { Product } from '@entities/product';
 import { AppRoutesEnum } from '@shared/model/enums';
-import { CallItemModalContent } from '@features/call-item-modal-content';
-import { createOrderFetchAction } from '@entities/order';
-import { useAsyncThunkDispatch } from '@shared/lib/store/use-async-thunk-dispatch';
-import { toast } from 'react-toastify';
-import { TOAST_CONTAINER_ID } from '@shared/ui/toast-container';
 import { PromosSlider } from '../promos-slider';
 import { Catalog } from '@widgets/catalog';
+import { ProductsList } from '@widgets/products-list';
 
 function MainPage() {
-  const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
-
-  const closeModalHandler = () => setBuyedProduct(null);
-
-  const dispatchCreateOrderAction = useAsyncThunkDispatch(
-    createOrderFetchAction,
-    () => {
-      closeModalHandler();
-      toast.success('Заказ успешно сформирован', {containerId: TOAST_CONTAINER_ID});
-    },
-    () => {
-      toast.error('Не удалось создать заказ', {containerId: TOAST_CONTAINER_ID});
-    }
-  );
-
-  const buyButtonClickHandler = (product: Product) => {
-    setBuyedProduct(product);
-  };
-
   return (
     <Layout.Content
       breadcrumbs={[
@@ -50,18 +23,12 @@ function MainPage() {
         <div className='container'>
           <h1 className='title title--h2'>Каталог фото- и видеотехники</h1>
           <div className='page-content__columns'>
-            <Catalog onBuyProductClick={buyButtonClickHandler} />
+            <Catalog
+              renderProductsList={(products) => <ProductsList products={products}/>}
+            />
           </div>
         </div>
       </section>
-      <Modal
-        isOpened={!!buyedProduct}
-        onClose={closeModalHandler}
-      >
-        <Modal.Content title='Свяжитесь со мной'>
-          {!!buyedProduct && <CallItemModalContent product={buyedProduct} onCreateOrder={dispatchCreateOrderAction} />}
-        </Modal.Content>
-      </Modal>
     </Layout.Content>
   );
 }

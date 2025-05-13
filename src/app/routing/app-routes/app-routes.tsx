@@ -7,6 +7,7 @@ import { Fallback } from '../fallback';
 const MainPage = lazy(() => import('@pages/main-page'));
 const ProductPage = lazy(() => import('@pages/product-page'));
 const NotFoundPage = lazy(() => import('@pages/not-found-page'));
+const BasketPage = lazy(() => import('@pages/basket-page'));
 
 export function AppRoutes(): JSX.Element {
   return (
@@ -25,6 +26,14 @@ export function AppRoutes(): JSX.Element {
           element={
             <Suspense fallback={<Fallback />}>
               <ProductPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={AppRoutesEnum.Basket}
+          element={
+            <Suspense fallback={<Fallback />}>
+              <BasketPage />
             </Suspense>
           }
         />

@@ -1,7 +1,9 @@
-import { basketSliceReducer } from './basket-slice';
-import { basketLoadingSelector } from './selectors';
+import { basketSliceReducer, BasketSliceState } from './basket-slice';
+import { basketLoadingSelector, basketDataSelector } from './selectors';
 
 export {
   basketSliceReducer,
-  basketLoadingSelector
+  basketLoadingSelector,
+  basketDataSelector,
+  type BasketSliceState
 };

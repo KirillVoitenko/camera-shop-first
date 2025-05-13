@@ -1,5 +1,4 @@
 import { Product, productsDataSelector } from '@entities/product';
-import { ProductsList } from '@features/products-list';
 import { ProductsSorting } from '@features/products-sorting';
 import { useAppSelector } from '@shared/lib/store';
 import { Classed } from '@shared/model/style-types';
@@ -9,10 +8,10 @@ import { Pagination } from '@features/pagination';
 import { JSX } from 'react';
 
 type CatalogProps = Classed<{
-  onBuyProductClick: (product: Product) => void;
+  renderProductsList: (products: Product[]) => JSX.Element;
 }>;
 
-export function Catalog({ className, onBuyProductClick }: CatalogProps): JSX.Element {
+export function Catalog({ className, renderProductsList }: CatalogProps): JSX.Element {
   const products = useAppSelector(productsDataSelector);
 
   const containerClassName = classNames('catalog__content', className);
@@ -34,9 +33,7 @@ export function Catalog({ className, onBuyProductClick }: CatalogProps): JSX.Ele
                     <Pagination
                       items={sortedProducts}
                     >
-                      {(itemsByPage) => (
-                        <ProductsList onBuyButtonClick={onBuyProductClick} products={itemsByPage} />
-                      )}
+                      {(itemsByPage) => renderProductsList(itemsByPage)}
                     </Pagination>
                   )}
                 </ProductsSorting>

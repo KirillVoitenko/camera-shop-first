@@ -4,7 +4,8 @@ export enum AppRoutesEnum {
   NotFound = '/404',
   Guaranties = '/guaranties',
   Delivery = '/delivery',
-  About = '/about'
+  About = '/about',
+  Basket = '/card'
 }
 
 export enum ServerRoutesEnum {

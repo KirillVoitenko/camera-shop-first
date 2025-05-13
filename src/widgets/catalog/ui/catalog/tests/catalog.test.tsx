@@ -23,6 +23,7 @@ type FakePaginationProps<TItemType> = {
 const FAKE_FILTER_TEXT = 'FAKE FILTER';
 const FAKE_SORTING_TEXT = 'FAKE SORTING';
 const FAKE_PAGINATION_TEXT = 'FAKE PAGINATION';
+const FAKE_PRODUCTS_LIST_TEXT = 'FAKE PRODUCTS LIST';
 
 const FakeFilter = ({products, children}: FakeFilterProps): JSX.Element => (
   <div>
@@ -45,6 +46,13 @@ const FakePagination = <TItemType,>({ children, items }: FakePaginationProps<TIt
   </div>
 );
 
+const FAKE_RENDER_PRODUCTS_LIST = (products: Product[]) => (
+  <p>
+    <span>{FAKE_PRODUCTS_LIST_TEXT}</span>
+    <span>{products.length}</span>
+  </p>
+);
+
 const INIT_ROUTE = '/init-route';
 const EMPTY_SECTION_PATTERN = /к сожалению все раскупили/gmi;
 
@@ -61,7 +69,7 @@ describe('component \'Catalog\'', () => {
 
   it('should correct render with empty products', () => {
     const { wrappedComponent } = withStore(
-      <Catalog onBuyProductClick={vi.fn()} />,
+      <Catalog renderProductsList={FAKE_RENDER_PRODUCTS_LIST}/>,
       {
         products: {
           loading: false,
@@ -80,9 +88,8 @@ describe('component \'Catalog\'', () => {
     vi.spyOn(await import('@features/products-filter'), 'ProductsFilter').mockImplementation(FakeFilter);
     vi.spyOn(await import('@features/products-sorting'), 'ProductsSorting').mockImplementation(FakeSorting);
     vi.spyOn(await import('@features/pagination'), 'Pagination').mockImplementation(FakePagination);
-    vi.spyOn(await import('@features/products-list'), 'ProductsList').mockImplementation(({products}) => <div>Products count: {products.length}</div>);
     const { wrappedComponent } = withStore(
-      <Catalog onBuyProductClick={vi.fn()} />,
+      <Catalog renderProductsList={FAKE_RENDER_PRODUCTS_LIST} />,
       {
         products: {
           loading: false,
@@ -98,5 +105,6 @@ describe('component \'Catalog\'', () => {
     expect(screen.getByText(FAKE_FILTER_TEXT)).toBeInTheDocument();
     expect(screen.getByText(FAKE_SORTING_TEXT)).toBeInTheDocument();
     expect(screen.getByText(FAKE_PAGINATION_TEXT)).toBeInTheDocument();
+    expect(screen.getByText(FAKE_PRODUCTS_LIST_TEXT)).toBeInTheDocument();
   });
 });

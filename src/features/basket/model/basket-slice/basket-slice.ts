@@ -1,17 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BaseLoadableState } from '@shared/model/state';
 import { createOrderFetchAction } from '@entities/order';
+import { BasketItemShort } from '../types';
 
-export type BasketSliceState = BaseLoadableState;
+export interface BasketSliceState extends BaseLoadableState {
+  basket: BasketItemShort[];
+}
 
 export const INITIAL_STATE: BasketSliceState = {
-  loading: false
+  loading: false,
+  basket: []
 };
 
 const basketSlice = createSlice({
   name: 'basket',
   initialState: INITIAL_STATE,
-  reducers: {},
+  reducers: {
+    addItem: (state, action: PayloadAction<number>) => {
+      const itemIndex = state.basket.findIndex((current) => current.productId === action.payload);
+
+      if (itemIndex === -1) {
+        state.basket.push({
+          count: 1,
+          productId: action.payload
+        });
+        return;
+      }
+
+      state.basket[itemIndex].count++;
+    }
+  },
   extraReducers(builder) {
     builder.addCase(createOrderFetchAction.pending, (state) => {
       state.loading = true;
@@ -26,3 +44,4 @@ const basketSlice = createSlice({
 });
 
 export const basketSliceReducer = basketSlice.reducer;
+export const { addItem } = basketSlice.actions;

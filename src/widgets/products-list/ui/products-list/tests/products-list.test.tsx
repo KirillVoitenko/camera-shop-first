@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { withStore } from '@test-utills/wrappers';
 import { generateProductMock } from '@test-utills/mocks/product';
 import { ProductsList } from '../products-list';
-import { PRODUCTS_LIST_CONTAINER_TEST_ID } from '@features/products-list/config/const';
+import { PRODUCTS_LIST_CONTAINER_TEST_ID } from '@widgets/products-list/config/const';
 import faker from 'faker';
 import { createMemoryHistory } from 'history';
 import { RootState } from '@shared/model/redux';
@@ -16,7 +16,7 @@ describe('Component \'ProductsList\'', () => {
   const history = createMemoryHistory();
 
   it('should correct render', () => {
-    const { wrappedComponent } = withStore(<ProductsList products={PRODUCTS_MOCK} onBuyButtonClick={vi.fn()} />, STORE_MOCK, [], history);
+    const { wrappedComponent } = withStore(<ProductsList products={PRODUCTS_MOCK} />, STORE_MOCK, [], history);
 
     const screen = render(wrappedComponent);
 

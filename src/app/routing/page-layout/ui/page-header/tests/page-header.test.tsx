@@ -10,6 +10,9 @@ import {
 vi.mock('@features/product-search', () => ({
   ProductSearch: vi.fn(() => <input placeholder='Поиск по сайту' />)
 }));
+vi.mock('@features/basket', () => ({
+  BasketLink: vi.fn(() => <span>Корзина</span>)
+}));
 
 describe('Component \'PageHeader\'', () => {
   it('should correct render', () => {
@@ -35,5 +38,12 @@ describe('Component \'PageHeader\'', () => {
     const screen = render(withRouter(<PageHeader />));
 
     expect(screen.getByPlaceholderText(searchPlaceholder)).toBeInTheDocument();
+  });
+
+  it('should render \'BasketLink\' component', () => {
+    const fakeBasketLinkPattern = /корзина/gmi;
+    const screen = render(withRouter(<PageHeader />));
+
+    expect(screen.getByText(fakeBasketLinkPattern)).toBeInTheDocument();
   });
 });

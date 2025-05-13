@@ -4,6 +4,7 @@ import { JSX } from 'react';
 import { PAGE_HEADER_TEST_ID } from '../../config/const';
 import { HeaderNavigation } from '../header-navigation';
 import { ProductSearch } from '@features/product-search';
+import { BasketLink } from '@features/basket';
 
 export function PageHeader(): JSX.Element {
   return (
@@ -12,6 +13,7 @@ export function PageHeader(): JSX.Element {
         <Logo type='header' />
         <HeaderNavigation />
         <ProductSearch />
+        <BasketLink className='header__basket-link' />
       </div>
     </Layout.Header>
   );
