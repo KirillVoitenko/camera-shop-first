@@ -54,7 +54,7 @@ export function FullProductCard({ className, product, onBuyButtonClick }: FullPr
           </p>
           <button className='btn btn--purple' type='button' data-testid={BUY_BUTTON_TEST_ID} onClick={buyButtonClickHandler}>
             <SvgIcon size={BUY_BUTTON_ICON_SIZE} xlinkHref='#icon-add-basket' />
-            Купить
+            Добавить в корзину
           </button>
           <ProductTabs product={product} />
         </div>

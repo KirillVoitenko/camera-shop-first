@@ -2,7 +2,8 @@ import {
   basketSliceReducer,
   BasketSliceState,
   INITIAL_STATE,
-  addItem
+  addItem,
+  initialize
 } from '../basket-slice';
 import { emptyAction } from '@test-utills/mocks/redux';
 import { createOrderFetchAction } from '@entities/order';
@@ -90,6 +91,22 @@ describe('Basket slice reducer', () => {
     expectedState.basket[0].count = 2;
 
     const result = basketSliceReducer(initState, addItem(FAKE_PRODUCT_ID));
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by \'initialize\' action', () => {
+    const expectedState: BasketSliceState = {
+      basket: [
+        {
+          count: 1,
+          productId: FAKE_PRODUCT_ID
+        }
+      ],
+      loading: false
+    };
+
+    const result = basketSliceReducer(INITIAL_STATE, initialize(expectedState.basket));
 
     expect(result).toEqual(expectedState);
   });

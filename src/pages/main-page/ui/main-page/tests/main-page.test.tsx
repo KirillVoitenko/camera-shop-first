@@ -10,6 +10,10 @@ const INITIAL_STATE: Partial<RootState> = {
     loading: false,
     products: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generateProductMock()),
     promos: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generatePromoProductMock()),
+  },
+  basket: {
+    basket: [],
+    loading: false
   }
 };
 

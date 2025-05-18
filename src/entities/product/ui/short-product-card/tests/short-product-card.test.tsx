@@ -14,6 +14,7 @@ const buyButtonClickHandlerMock = vi.fn();
 const PREVIEW_TEST_ID = 'preview-container';
 const RATE_INFO_TEST_ID = 'rate-container';
 const MORE_INFO_LINK_TEXT = 'Подробнее';
+const IN_BASKET_LINK_TEXT_PATTERN = /в корзине/gmi;
 
 describe('Component \'ShortProductCard\'', () => {
   let history: MemoryHistory;
@@ -23,7 +24,7 @@ describe('Component \'ShortProductCard\'', () => {
     buyButtonClickHandlerMock.mockReset();
   });
 
-  it('should correct render', () => {
+  it('should correct render with no basket product', () => {
     const screen = render(withRouter(<ShortProductCard onBuyButtonClick={buyButtonClickHandlerMock} product={PRODUCT_MOCK}/>));
     const expectedPrice = moneyFormat(PRODUCT_MOCK.price);
 
@@ -32,6 +33,21 @@ describe('Component \'ShortProductCard\'', () => {
     expect(screen.getByTestId(RATE_INFO_TEST_ID)).toBeInTheDocument();
     expect(screen.getByText(PRODUCT_MOCK.name)).toBeInTheDocument();
     expect(screen.getByTestId(BUY_BUTTON_TEST_ID)).toBeInTheDocument();
+    expect(screen.queryByText(IN_BASKET_LINK_TEXT_PATTERN)).toBeNull();
+    expect(screen.getByText(expectedPrice, {trim: false, collapseWhitespace: false})).toBeInTheDocument();
+    expect(screen.getByText(MORE_INFO_LINK_TEXT)).toBeInTheDocument();
+  });
+
+  it('should correct render with basket product', () => {
+    const screen = render(withRouter(<ShortProductCard onBuyButtonClick={buyButtonClickHandlerMock} product={PRODUCT_MOCK} inBasketProduct/>));
+    const expectedPrice = moneyFormat(PRODUCT_MOCK.price);
+
+    expect(screen.getByTestId(SHORT_PRODUCT_CARD_TEST_ID)).toBeInTheDocument();
+    expect(screen.getByTestId(PREVIEW_TEST_ID)).toBeInTheDocument();
+    expect(screen.getByTestId(RATE_INFO_TEST_ID)).toBeInTheDocument();
+    expect(screen.getByText(PRODUCT_MOCK.name)).toBeInTheDocument();
+    expect(screen.queryByTestId(BUY_BUTTON_TEST_ID)).toBeNull();
+    expect(screen.getByText(IN_BASKET_LINK_TEXT_PATTERN)).toBeInTheDocument();
     expect(screen.getByText(expectedPrice, {trim: false, collapseWhitespace: false})).toBeInTheDocument();
     expect(screen.getByText(MORE_INFO_LINK_TEXT)).toBeInTheDocument();
   });
@@ -55,5 +71,15 @@ describe('Component \'ShortProductCard\'', () => {
     );
 
     expect(history.location.pathname).toBe(`${expectedUrl}`);
+  });
+
+  it('should navigate into basket page by in basket link click', async () => {
+    const screen = render(withRouter(<ShortProductCard onBuyButtonClick={buyButtonClickHandlerMock} product={PRODUCT_MOCK} inBasketProduct/>, history));
+
+    await userEvent.click(
+      screen.getByText(IN_BASKET_LINK_TEXT_PATTERN)
+    );
+
+    expect(history.location.pathname).toBe(AppRoutesEnum.Basket);
   });
 });

@@ -5,9 +5,8 @@ import { AppRoutesEnum } from '@shared/model/enums';
 import { Classed } from '@shared/model/style-types';
 import { ElementSize } from '@shared/model/html';
 import { BASKET_ICON_SIZE } from '@features/basket/config/const';
-import { useAppSelector } from '@shared/lib/store';
-import { basketDataSelector } from '@features/basket/model/basket-slice';
 import { BasketLinkTestId } from '@features/basket/config/const';
+import { useBasket } from '@features/basket/lib/use-basket';
 
 type BasketLinkProps = Classed<{
   iconId?: string;
@@ -21,7 +20,7 @@ export function BasketLink({
   link = AppRoutesEnum.Basket,
   size = BASKET_ICON_SIZE
 }: BasketLinkProps): JSX.Element {
-  const basket = useAppSelector(basketDataSelector);
+  const { basket } = useBasket();
   const productsCount = basket.reduce((accum, current) => accum + current.count, 0);
 
   return (

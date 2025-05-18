@@ -23,6 +23,7 @@ export function AddToBasketSuccessModalContent({ onActionClick }: AddToBasketSuc
         size={ICON_SIZE}
         xlinkHref='#icon-success'
         className='modal__icon'
+        testId='add-success-icon'
       />
       <div className='modal__buttons'>
         <button

@@ -9,10 +9,12 @@ import { RateInfo } from '@shared/ui/rate-info';
 import { moneyFormat } from '@shared/lib/format';
 import { generatePath, Link, } from 'react-router-dom';
 import { AppRoutesEnum } from '@shared/model/enums';
+import { SvgIcon } from '@shared/ui/svg-icon';
 
 type ShortProductCardProps = ClassedAndStyled<{
   product: Product;
   onBuyButtonClick: (product: Product) => void;
+  inBasketProduct?: boolean;
 }>
 
 const PREVIEW_SIZE: ElementSize = {
@@ -20,9 +22,14 @@ const PREVIEW_SIZE: ElementSize = {
   width: 280
 };
 
-export function ShortProductCard({onBuyButtonClick, product, className, style}: ShortProductCardProps): JSX.Element {
+const BASKET_ICON_SIZE: ElementSize = {
+  width: 16,
+  height: 16
+};
+
+export function ShortProductCard({ onBuyButtonClick, product, className, style, inBasketProduct = false }: ShortProductCardProps): JSX.Element {
   const containerClassName = classNames('product-card', className);
-  const productPageUrl = generatePath(AppRoutesEnum.Product, {productId: String(product.id)});
+  const productPageUrl = generatePath(AppRoutesEnum.Product, { productId: String(product.id) });
   const buyButtonClickHandler = () => onBuyButtonClick(product);
   return (
     <div className={containerClassName} data-testid={SHORT_PRODUCT_CARD_TEST_ID} style={style}>
@@ -40,8 +47,8 @@ export function ShortProductCard({onBuyButtonClick, product, className, style}: 
         }}
       />
       <div className='product-card__info'>
-        <RateInfo averageRating={product.rating} reviewsCount={product.reviewCount} className='product-card__rate'/>
-        <p className='product-card__title' style={{width: '100%'}}>
+        <RateInfo averageRating={product.rating} reviewsCount={product.reviewCount} className='product-card__rate' />
+        <p className='product-card__title' style={{ width: '100%' }}>
           {product.name}
         </p>
         <p className='product-card__price'>
@@ -52,9 +59,24 @@ export function ShortProductCard({onBuyButtonClick, product, className, style}: 
         </p>
       </div>
       <div className='product-card__buttons'>
-        <button className='btn btn--purple product-card__btn' onClick={buyButtonClickHandler} data-testid={BUY_BUTTON_TEST_ID}>
-          Купить
-        </button>
+        {inBasketProduct
+          ? (
+            <Link
+              to={AppRoutesEnum.Basket}
+              className='btn btn--purple-border product-card__btn product-card__btn--in-cart'
+            >
+              <SvgIcon
+                size={BASKET_ICON_SIZE}
+                xlinkHref='#icon-basket'
+              />
+              В корзине
+            </Link>
+          )
+          : (
+            <button className='btn btn--purple product-card__btn' onClick={buyButtonClickHandler} data-testid={BUY_BUTTON_TEST_ID}>
+              Купить
+            </button>
+          )}
         <Link to={productPageUrl} className='btn btn--transparent'>
           Подробнее
         </Link>

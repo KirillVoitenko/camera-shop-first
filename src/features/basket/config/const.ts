@@ -9,3 +9,5 @@ export enum BasketLinkTestId {
   Link = 'basket-link',
   Icon = 'basket-link-icon'
 }
+
+export const BASKET_STORAGE_KEY = 'CAMERA_SHOP/BASKET';

@@ -5,12 +5,17 @@ import { generateProductMock, generatePromoProductMock } from '@test-utills/mock
 import faker from 'faker';
 import { Product } from '@entities/product';
 import { useStartup } from '../use-startup';
-import { AppThunkDispatch, createAppThunkMiddlewareMock, isActionsEquals } from '@test-utills/mocks/redux';
+import {
+  AppThunkDispatch,
+  createAppThunkMiddlewareMock,
+  isActionsEquals
+} from '@test-utills/mocks/redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { RootState } from '@shared/model/redux';
 import { FC } from 'react';
 import { PromoProduct } from '@entities/product/model/types';
 
+const INITIALIZE_BASKET_MOCK = vi.fn();
 const PRODUCTS_MOCK = Array.from({length: faker.datatype.number({max: 10})}).map(() => generateProductMock());
 const PROMOS_MOCK = Array.from({length: faker.datatype.number({max: 10})}).map(() => generatePromoProductMock());
 
@@ -38,9 +43,11 @@ describe('Hook \'useStartup\'', () => {
     });
 
     storeWrapper = getStoreWrapper(store);
+    INITIALIZE_BASKET_MOCK.mockReset();
   });
 
   it('should dispatch \'fetchProductsAction\'', async () => {
+    vi.spyOn(await import('@features/basket'), 'useBasketInitialize').mockImplementation(() => INITIALIZE_BASKET_MOCK);
     vi.spyOn(await import('@entities/product'), 'fetchProductsAction').mockImplementation(fakeFetchProductsAction);
 
     await waitFor(() => renderHook(() => useStartup(), {wrapper: storeWrapper}));
@@ -54,5 +61,14 @@ describe('Hook \'useStartup\'', () => {
     );
 
     expect(result).toBeTruthy();
+  });
+
+  it('should initialize basket', async () => {
+    vi.spyOn(await import('@features/basket'), 'useBasketInitialize').mockImplementation(() => INITIALIZE_BASKET_MOCK);
+    vi.spyOn(await import('@entities/product'), 'fetchProductsAction').mockImplementation(fakeFetchProductsAction);
+
+    await waitFor(() => renderHook(() => useStartup(), {wrapper: storeWrapper}));
+
+    expect(INITIALIZE_BASKET_MOCK).toBeCalledTimes(1);
   });
 });

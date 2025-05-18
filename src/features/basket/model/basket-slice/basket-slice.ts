@@ -28,6 +28,9 @@ const basketSlice = createSlice({
       }
 
       state.basket[itemIndex].count++;
+    },
+    initialize: (state, action: PayloadAction<BasketItemShort[]>) => {
+      state.basket = action.payload;
     }
   },
   extraReducers(builder) {
@@ -44,4 +47,4 @@ const basketSlice = createSlice({
 });
 
 export const basketSliceReducer = basketSlice.reducer;
-export const { addItem } = basketSlice.actions;
+export const { addItem, initialize } = basketSlice.actions;

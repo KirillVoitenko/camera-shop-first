@@ -1,9 +1,11 @@
 import { useAppDispatch } from '@shared/lib/store';
 import { fetchProductsAction } from '@entities/product';
 import { useEffect } from 'react';
+import { useBasketInitialize } from '@features/basket';
 
 export const useStartup = (): void => {
   const dispatch = useAppDispatch();
+  const initializeBasket = useBasketInitialize();
 
   useEffect(
     () => {
@@ -15,6 +17,7 @@ export const useStartup = (): void => {
         }
       };
 
+      initializeBasket();
       fetchProducts();
 
       return () => {

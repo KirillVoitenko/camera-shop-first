@@ -4,7 +4,7 @@ import { PRODUCTS_LIST_CONTAINER_TEST_ID } from '@widgets/products-list/config/c
 import classNames from 'classnames';
 import { Product, ShortProductCard } from '@entities/product';
 import { Nullable } from '@shared/model/utill-types';
-import { AddToBasketModalContent, AddToBasketSuccessModalContent } from '@features/basket';
+import { AddToBasketModalContent, AddToBasketSuccessModalContent, useBasket } from '@features/basket';
 import { Modal } from '@shared/ui/modal';
 
 type ProductsListProps = Classed<{
@@ -12,6 +12,8 @@ type ProductsListProps = Classed<{
 }>;
 
 export function ProductsList({ className, products }: ProductsListProps): JSX.Element {
+  const { addItem: addToBasket, basket } = useBasket();
+
   const containerClassName = classNames('cards catalog__cards', className);
   const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
   const [addToBasketSuccessModalVisible, setAddToBasketSuccessModalVisible] = useState<boolean>(false);
@@ -26,12 +28,19 @@ export function ProductsList({ className, products }: ProductsListProps): JSX.El
   const addToBasketClickHandler = (productId: number) => {
     closeAddToBasketModalHandler();
     setAddToBasketSuccessModalVisible(true);
+    addToBasket(productId);
   };
 
   return (
     <>
       <div className={containerClassName} data-testid={PRODUCTS_LIST_CONTAINER_TEST_ID}>
-        {products.map((current) => <ShortProductCard onBuyButtonClick={buyButtonClickHandler} product={current} key={current.id} />)}
+        {products.map((current) => (
+          <ShortProductCard
+            onBuyButtonClick={buyButtonClickHandler}
+            product={current} key={current.id}
+            inBasketProduct={!!basket.find((basketItem) => basketItem.productId === current.id)}
+          />
+        ))}
       </div>
       <Modal
         isOpened={!!buyedProduct}
@@ -47,6 +56,5 @@ export function ProductsList({ className, products }: ProductsListProps): JSX.El
         <AddToBasketSuccessModalContent onActionClick={closeAddToBasketSuccessModalHandler} />
       </Modal>
     </>
-
   );
 }
