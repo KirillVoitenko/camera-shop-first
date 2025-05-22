@@ -3,11 +3,14 @@ import {
   BasketSliceState,
   INITIAL_STATE,
   addItem,
-  initialize
+  initialize,
+  deleteItem,
+  updateItem
 } from '../basket-slice';
 import { emptyAction } from '@test-utills/mocks/redux';
 import { createOrderFetchAction } from '@entities/order';
 import faker from 'faker';
+import { BasketItemShort } from '../../types';
 
 const FAKE_PRODUCT_ID = faker.datatype.number();
 
@@ -88,7 +91,6 @@ describe('Basket slice reducer', () => {
     };
 
     const expectedState: BasketSliceState = structuredClone(initState);
-    expectedState.basket[0].count = 2;
 
     const result = basketSliceReducer(initState, addItem(FAKE_PRODUCT_ID));
 
@@ -107,6 +109,45 @@ describe('Basket slice reducer', () => {
     };
 
     const result = basketSliceReducer(INITIAL_STATE, initialize(expectedState.basket));
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by \'updateItem\' action', () => {
+    const expectedBasketItem: BasketItemShort = {
+      count: faker.datatype.number({min: 1, max: 10}),
+      productId: FAKE_PRODUCT_ID
+    };
+
+    const initState: BasketSliceState = {
+      basket: [{count: 0, productId: FAKE_PRODUCT_ID}],
+      loading: false,
+    };
+
+    const expectedState: BasketSliceState = {
+      basket: [
+        expectedBasketItem
+      ],
+      loading: false
+    };
+
+    const result = basketSliceReducer(initState, updateItem(expectedBasketItem));
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by \'deleteItem\' action', () => {
+    const initState: BasketSliceState = {
+      basket: [{count: 1, productId: FAKE_PRODUCT_ID}],
+      loading: false,
+    };
+
+    const expectedState: BasketSliceState = {
+      basket: [],
+      loading: false
+    };
+
+    const result = basketSliceReducer(initState, deleteItem(FAKE_PRODUCT_ID));
 
     expect(result).toEqual(expectedState);
   });

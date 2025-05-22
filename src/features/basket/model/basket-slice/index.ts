@@ -2,7 +2,9 @@ import {
   basketSliceReducer,
   BasketSliceState,
   addItem as addItemAction,
-  initialize as initializeBasketAction
+  initialize as initializeBasketAction,
+  updateItem as updateItemAction,
+  deleteItem as deleteItemAction,
 } from './basket-slice';
 import { basketLoadingSelector, basketDataSelector } from './selectors';
 
@@ -12,5 +14,7 @@ export {
   basketDataSelector,
   type BasketSliceState,
   addItemAction,
-  initializeBasketAction
+  initializeBasketAction,
+  updateItemAction,
+  deleteItemAction
 };

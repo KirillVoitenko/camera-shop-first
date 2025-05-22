@@ -10,7 +10,7 @@ const PRODUCT_MOCK = generateProductMock();
 const FAKE_CHILD_TEXT = faker.lorem.sentence();
 
 describe('Component \'BasketProductCard\'', () => {
-  it('should correct render', () => {
+  it('should correct render without description extra info', () => {
     const screen = render(
       withRouter(
         <BasketProductCard product={PRODUCT_MOCK}>
@@ -22,5 +22,28 @@ describe('Component \'BasketProductCard\'', () => {
     expect(screen.getByTestId(PRODUCT_CHARACTERISTICS_LIST_TEST_ID)).toBeInTheDocument();
     expect(screen.getByTestId(PREVIEW_TEST_ID)).toBeInTheDocument();
     expect(screen.getByText(FAKE_CHILD_TEXT)).toBeInTheDocument();
+  });
+
+  it('should correct render with description extra info', () => {
+    const fakeExtraInfoText = faker.lorem.paragraph();
+    const screen = render(
+      withRouter(
+        <BasketProductCard
+          product={PRODUCT_MOCK}
+          renderDescriptionExtraInfo={() => (
+            <p>
+              {fakeExtraInfoText}
+            </p>
+          )}
+        >
+          <p>{FAKE_CHILD_TEXT}</p>
+        </BasketProductCard>
+      )
+    );
+
+    expect(screen.getByTestId(PRODUCT_CHARACTERISTICS_LIST_TEST_ID)).toBeInTheDocument();
+    expect(screen.getByTestId(PREVIEW_TEST_ID)).toBeInTheDocument();
+    expect(screen.getByText(FAKE_CHILD_TEXT)).toBeInTheDocument();
+    expect(screen.getByText(fakeExtraInfoText)).toBeInTheDocument();
   });
 });

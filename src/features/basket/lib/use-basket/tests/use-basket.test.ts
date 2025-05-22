@@ -7,7 +7,11 @@ import { Action } from '@reduxjs/toolkit';
 import { AppThunkDispatch, isActionsEquals } from '@test-utills/mocks/redux';
 import { BasketItemShort } from '@features/basket/model/types';
 import faker from 'faker';
-import { addItemAction } from '@features/basket/model/basket-slice';
+import {
+  addItemAction,
+  updateItemAction,
+  deleteItemAction
+} from '@features/basket/model/basket-slice';
 import { basketStorage } from '../../basket-storage';
 
 
@@ -42,10 +46,12 @@ describe('hook \'useBasket\'', () => {
   it('should return correct signature', () => {
     const { result } = renderHook(() => useBasket(), {wrapper: getStoreWrapper(store)});
 
-    const { addItem, basket } = result.current;
+    const { addItem, basket, deleteItem, updateItem } = result.current;
 
     expect(basket).toEqual(basketMock);
     expect(typeof addItem).toBe('function');
+    expect(typeof deleteItem).toBe('function');
+    expect(typeof updateItem).toBe('function');
   });
 
   it('method \'addItem\' should correct works', () => {
@@ -57,6 +63,27 @@ describe('hook \'useBasket\'', () => {
 
     expect(isActionsEquals(store.getActions(), [addItemAction])).toBeTruthy();
     expect(updateStorageItemMock).toBeCalledTimes(1);
-    expect(updateStorageItemMock).lastCalledWith(basketMock);
+  });
+
+  it('method \'updateItem\' should correct works', () => {
+    const { result } = renderHook(() => useBasket(), {wrapper: getStoreWrapper(store)});
+
+    const { updateItem } = result.current;
+
+    act(() => updateItem({...basketMock[0], count: faker.datatype.number()}));
+
+    expect(isActionsEquals(store.getActions(), [updateItemAction])).toBeTruthy();
+    expect(updateStorageItemMock).toBeCalledTimes(1);
+  });
+
+  it('method \'deleteItem\' should correct works', () => {
+    const { result } = renderHook(() => useBasket(), {wrapper: getStoreWrapper(store)});
+
+    const { deleteItem } = result.current;
+
+    act(() => deleteItem(basketMock[0].productId));
+
+    expect(isActionsEquals(store.getActions(), [deleteItemAction])).toBeTruthy();
+    expect(updateStorageItemMock).toBeCalledTimes(1);
   });
 });

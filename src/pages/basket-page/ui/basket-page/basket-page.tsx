@@ -1,3 +1,4 @@
+import { Basket } from '@features/basket';
 import { PAGE_TITLE } from '@pages/basket-page/config/const';
 import { withBrowserTitle } from '@shared/lib/with-browser-title';
 import { AppRoutesEnum } from '@shared/model/enums';
@@ -28,6 +29,7 @@ function BasketPage(): JSX.Element {
           <h1 className='title title--h2'>
             Корзина
           </h1>
+          <Basket />
         </div>
       </section>
     </Layout.Content>

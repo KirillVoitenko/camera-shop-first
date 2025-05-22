@@ -24,11 +24,26 @@ const basketSlice = createSlice({
           count: 1,
           productId: action.payload
         });
-        return;
       }
-
-      state.basket[itemIndex].count++;
     },
+
+    updateItem: (state, action: PayloadAction<BasketItemShort>) => {
+      for (let itemIndex = 0; itemIndex < state.basket.length; itemIndex++) {
+        if (state.basket[itemIndex].productId === action.payload.productId && state.basket[itemIndex].count !== action.payload.count) {
+          state.basket[itemIndex] = action.payload;
+          break;
+        }
+      }
+    },
+
+    deleteItem: (state, action: PayloadAction<number>) => {
+      const itemIndex = state.basket.findIndex((current) => current.productId === action.payload);
+
+      if (itemIndex !== -1) {
+        state.basket = state.basket.filter((current) => current.productId !== action.payload);
+      }
+    },
+
     initialize: (state, action: PayloadAction<BasketItemShort[]>) => {
       state.basket = action.payload;
     }
@@ -47,4 +62,9 @@ const basketSlice = createSlice({
 });
 
 export const basketSliceReducer = basketSlice.reducer;
-export const { addItem, initialize } = basketSlice.actions;
+export const {
+  addItem,
+  initialize,
+  updateItem,
+  deleteItem
+} = basketSlice.actions;

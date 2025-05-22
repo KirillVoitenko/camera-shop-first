@@ -21,7 +21,6 @@ const getTabStyles = (isActiveTab: boolean, baseSelector: string) => classNames(
 );
 
 export function ProductTabs({ product, selectedTab = 'characteristics' }: ProductTabsProps): JSX.Element {
-  //const [activeTab, setActiveTab] = useState<CardTab>(selectedTab);
   const { changePageSearchParams, getConcretePageSearchParam } = usePageSearchParams(
     { ...INITIAL_PRODUCT_TAB_PARAMS, activeTab: selectedTab },
     convertTabParamsObjectToSearchParams,

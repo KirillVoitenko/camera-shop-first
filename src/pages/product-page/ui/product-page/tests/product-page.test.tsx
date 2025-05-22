@@ -19,11 +19,15 @@ const PRODUCT_STATE_MOCK = {
   comments: Array.from({ length: COMMENTS_LENGTH }).map(generateCommentMock),
   loading: false,
   product: PRODUCT_MOCK,
-  similarProducts: Array.from({ length: SIMILARS_LENGTH }).map(generateProductMock)
+  similarProducts: Array.from({ length: SIMILARS_LENGTH }).map(generateProductMock),
 };
 
 const INITIAL_STATE: Partial<RootState> = {
-  product: PRODUCT_STATE_MOCK
+  product: PRODUCT_STATE_MOCK,
+  basket: {
+    basket: [],
+    loading: false,
+  }
 };
 
 const FETCH_PRODUCT_ACTION_MOCK = createAsyncThunk<FetchProductActionReturn, { cameraId: number }>(

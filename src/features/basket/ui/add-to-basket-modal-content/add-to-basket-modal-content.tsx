@@ -17,17 +17,23 @@ const ICON_SIZE: ElementSize = {
   width: 10
 };
 
-export function AddToBasketModalContent({ onAddToBasketButtonClick, product, className}: AddToBasketModalProps): JSX.Element {
+export function AddToBasketModalContent({ onAddToBasketButtonClick, product, className }: AddToBasketModalProps): JSX.Element {
   const cardClassName = classNames('basket-item--short', className);
   const addToBasketClickHandler: MouseEventHandler<HTMLButtonElement> = () => onAddToBasketButtonClick(product.id);
 
   return (
     <Modal.Content title='Добавить товар в корзину'>
-      <BasketProductCard className={cardClassName} product={product}>
-        <p className='basket-item__price'>
-          <span className='visually-hidden'>Цена:</span>
-          {moneyFormat(product.price)}
-        </p>
+      <BasketProductCard
+        className={cardClassName}
+        product={product}
+        renderDescriptionExtraInfo={(productInfo) => (
+          <p className='basket-item__price'>
+            <span className='visually-hidden'>Цена:</span>
+            {moneyFormat(productInfo.price)}
+          </p>
+        )}
+      >
+
       </BasketProductCard>
       <div className='modal__buttons'>
         <button

@@ -46,8 +46,6 @@ describe('hook \'usePageSearchParams\'', () => {
     history.replace(INIT_ROUTE);
   });
 
-  //afterEach(cleanup);
-
   it('should return correct signature', () => {
     const { result } = renderHook(() => usePageSearchParams(
       TEST_PARAMS_INITIAL_VALUE,

@@ -4,6 +4,7 @@ import { AddToBasketModalContent } from './ui/add-to-basket-modal-content';
 import { AddToBasketSuccessModalContent } from './ui/add-to-basket-success-modal-content';
 import { useBasket } from './lib/use-basket';
 import { useBasketInitialize } from './lib/use-basket-initialize';
+import { Basket } from './ui/basket';
 
 export {
   basketSliceReducer,
@@ -12,5 +13,6 @@ export {
   AddToBasketModalContent,
   AddToBasketSuccessModalContent,
   useBasket,
-  useBasketInitialize
+  useBasketInitialize,
+  Basket
 };
