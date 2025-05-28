@@ -44,6 +44,10 @@ const basketSlice = createSlice({
       }
     },
 
+    clearBasket: (state) => {
+      state.basket = INITIAL_STATE.basket;
+    },
+
     initialize: (state, action: PayloadAction<BasketItemShort[]>) => {
       state.basket = action.payload;
     }
@@ -66,5 +70,6 @@ export const {
   addItem,
   initialize,
   updateItem,
-  deleteItem
+  deleteItem,
+  clearBasket
 } = basketSlice.actions;

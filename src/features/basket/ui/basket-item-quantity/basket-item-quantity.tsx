@@ -34,12 +34,19 @@ export function BasketItemQuantity({
   const [countValue, setCountValue] = useState(count);
 
   const counterId = `basket-item-counter-${itemId}`;
+
+  const updateCounter = (newValue: number): void => {
+    const correctValue = getCorrectItemsCountByRange(newValue);
+    setCountValue(correctValue);
+    onUpdateItemCounter(itemId, correctValue);
+  };
+
   const decreaseButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
-    onUpdateItemCounter(itemId, countValue - 1);
+    updateCounter(countValue - 1);
   };
 
   const increaseButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
-    onUpdateItemCounter(itemId, countValue + 1);
+    updateCounter(countValue + 1);
   };
 
   const counterInputChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {

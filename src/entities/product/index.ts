@@ -2,7 +2,8 @@ import {
   type Product,
   ProductCategory,
   ProductType,
-  RecommendedUserLevel
+  RecommendedUserLevel,
+  type PromoProduct
 } from './model/types';
 import {
   fetchProductsAction,
@@ -21,6 +22,7 @@ export {
   Product,
   ProductCategory,
   ProductType,
+  PromoProduct,
   RecommendedUserLevel,
   fetchProductsAction,
   productSliceReducer,

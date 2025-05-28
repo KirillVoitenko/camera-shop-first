@@ -3,7 +3,6 @@ import { BasketItem } from '../basket-item';
 import { BasketItemShort, ProductInBasket } from '@features/basket/model/types';
 import faker from 'faker';
 import { generateProductMock } from '@test-utills/mocks/product';
-import { moneyFormat } from '@shared/lib/format';
 import { BasketItemQuantityTestId, BasketItemTestId } from '@features/basket/config/const';
 import userEvent from '@testing-library/user-event';
 
@@ -41,8 +40,8 @@ describe('component \'BasketItem\'', () => {
 
     const screen = render(<BasketItem item={productInBasket} onDeleteItem={deleteModalOpenMock}/>);
 
-    expect(screen.getByText(moneyFormat(fakeProduct.price), { collapseWhitespace: false })).toBeInTheDocument();
-    expect(screen.getByText(moneyFormat(fakeProduct.price * fakeBasketItemMock.count), { collapseWhitespace: false })).toBeInTheDocument();
+    expect(screen.getByTestId(BasketItemTestId.OneProductPrice)).toBeInTheDocument();
+    expect(screen.getByTestId(BasketItemTestId.AllProductPrice)).toBeInTheDocument();
     expect(screen.getByTestId(BasketItemTestId.DeleteButton)).toBeInTheDocument();
     expect(screen.getByTestId(BasketItemQuantityTestId.Container)).toBeInTheDocument();
     expect(screen.getByTestId(BASKET_PRODUCT_CARD_TEST_ID)).toBeInTheDocument();

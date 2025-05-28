@@ -9,6 +9,8 @@ import { AppRoutesEnum } from '@shared/model/enums';
 type OnActionClickEachArg = {
   buttonText: RegExp;
   buttonName: string;
+  callback: () => void;
+  callbackName: string;
 }
 
 const TITLE_PATTERN = /товар успешно добавлен в корзину/gmi;
@@ -18,18 +20,20 @@ const ICON_TEST_ID = 'add-success-icon';
 const INIT_ROUTE = '/init-route';
 
 describe('component \'AddToBasketSuccessModalContent\'', () => {
-  const onActionClickMock = vi.fn();
+  const onBasketClickMock = vi.fn();
+  const onContinueBuyMock = vi.fn();
   const history = createMemoryHistory();
 
   beforeEach(() => {
-    onActionClickMock.mockReset();
+    onBasketClickMock.mockReset();
+    onContinueBuyMock.mockReset();
     history.replace(INIT_ROUTE);
   });
 
   it('should correct render', () => {
     const screen = render(
       withRouter(
-        <AddToBasketSuccessModalContent onActionClick={onActionClickMock}/>,
+        <AddToBasketSuccessModalContent onBasketLinkClick={onBasketClickMock} onContinueBuy={onContinueBuyMock}/>,
         history
       )
     );
@@ -41,12 +45,12 @@ describe('component \'AddToBasketSuccessModalContent\'', () => {
   });
 
   it.each<OnActionClickEachArg>([
-    { buttonText: RETURN_BUTTON_TEXT_PATTERN, buttonName: 'returnButton' },
-    { buttonText: TO_BASKET_LINK_TEXT_PATTERN, buttonName: 'toBasketLink' }
-  ])('should call \'onActionClick\' callback if button $buttonName clicked', async ({ buttonText }) => {
+    { buttonText: RETURN_BUTTON_TEXT_PATTERN, buttonName: 'returnButton', callback: onContinueBuyMock, callbackName: 'onContinueBuy' },
+    { buttonText: TO_BASKET_LINK_TEXT_PATTERN, buttonName: 'toBasketLink', callback: onBasketClickMock, callbackName: 'onBasketLinkClick' }
+  ])('should call $callbackName callback if button $buttonName clicked', async ({ buttonText, callback }) => {
     const screen = render(
       withRouter(
-        <AddToBasketSuccessModalContent onActionClick={onActionClickMock}/>,
+        <AddToBasketSuccessModalContent onBasketLinkClick={onBasketClickMock} onContinueBuy={onContinueBuyMock}/>,
         history
       )
     );
@@ -54,13 +58,13 @@ describe('component \'AddToBasketSuccessModalContent\'', () => {
 
     await userEvent.click(buttonElement);
 
-    expect(onActionClickMock).toBeCalledTimes(1);
+    expect(callback).toBeCalledTimes(1);
   });
 
   it('should navigate to basket if to basket link clicked', async () => {
     const screen = render(
       withRouter(
-        <AddToBasketSuccessModalContent onActionClick={onActionClickMock}/>,
+        <AddToBasketSuccessModalContent onBasketLinkClick={onBasketClickMock} onContinueBuy={onContinueBuyMock}/>,
         history
       )
     );

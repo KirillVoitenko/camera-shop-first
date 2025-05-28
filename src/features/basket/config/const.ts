@@ -19,6 +19,8 @@ export enum CounterRange {
 
 export enum BasketItemTestId {
   DeleteButton = 'basket-item-delete-button',
+  OneProductPrice = 'basket-item-product-price',
+  AllProductPrice = 'basket-item-all-price'
 }
 
 export enum BasketItemQuantityTestId {

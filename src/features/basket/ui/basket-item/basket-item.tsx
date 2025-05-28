@@ -39,7 +39,7 @@ export function BasketItem({ item, className, onDeleteItem }: BasketItemProps): 
       as='li'
       data-testid='basket-item'
     >
-      <p className='basket-item__price'>
+      <p className='basket-item__price' data-testid={BasketItemTestId.OneProductPrice}>
         <span className='visually-hidden'>Цена:</span>
         {moneyFormat(item.product.price)}
       </p>
@@ -48,7 +48,7 @@ export function BasketItem({ item, className, onDeleteItem }: BasketItemProps): 
         itemId={item.product.id}
         onUpdateItemCounter={updateItemCounterHandler}
       />
-      <div className='basket-item__total-price'>
+      <div className='basket-item__total-price' data-testid={BasketItemTestId.AllProductPrice}>
         <span className='visually-hidden'>Общая цена:</span>
         {moneyFormat(item.product.price * item.count)}
       </div>

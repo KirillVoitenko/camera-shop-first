@@ -8,6 +8,8 @@ import {
   AddToBasketModalContent,
   AddToBasketSuccessModalContent
 } from '@features/basket';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutesEnum } from '@shared/model/enums';
 
 type ProductInfoProps = {
   product: Product;
@@ -15,6 +17,7 @@ type ProductInfoProps = {
 
 export function ProductInfo({ product }: ProductInfoProps): JSX.Element {
   const { addItem: addToBasket } = useBasket();
+  const navigate = useNavigate();
 
   const [buyedProduct, setBuyedProduct] = useState<Nullable<Product>>(null);
   const [addToBasketSuccessModalVisible, setAddToBasketSuccessModalVisible] = useState<boolean>(false);
@@ -30,6 +33,11 @@ export function ProductInfo({ product }: ProductInfoProps): JSX.Element {
     closeAddToBasketModalHandler();
     setAddToBasketSuccessModalVisible(true);
     addToBasket(productId);
+  };
+
+  const continueBuyClickHandler = () => {
+    closeAddToBasketModalHandler();
+    navigate(AppRoutesEnum.Main);
   };
 
   return (
@@ -49,7 +57,10 @@ export function ProductInfo({ product }: ProductInfoProps): JSX.Element {
         isOpened={addToBasketSuccessModalVisible}
         onClose={closeAddToBasketSuccessModalHandler}
       >
-        <AddToBasketSuccessModalContent onActionClick={closeAddToBasketSuccessModalHandler} />
+        <AddToBasketSuccessModalContent
+          onBasketLinkClick={closeAddToBasketSuccessModalHandler}
+          onContinueBuy={continueBuyClickHandler}
+        />
       </Modal>
     </>
   );

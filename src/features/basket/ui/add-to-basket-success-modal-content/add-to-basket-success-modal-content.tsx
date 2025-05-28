@@ -11,10 +11,11 @@ const ICON_SIZE: ElementSize = {
 };
 
 type AddToBasketSuccessModalContentProps = {
-  onActionClick: () => void;
+  onBasketLinkClick: () => void;
+  onContinueBuy: () => void;
 }
 
-export function AddToBasketSuccessModalContent({ onActionClick }: AddToBasketSuccessModalContentProps): JSX.Element {
+export function AddToBasketSuccessModalContent({ onBasketLinkClick, onContinueBuy }: AddToBasketSuccessModalContentProps): JSX.Element {
   return (
     <Modal.Content
       title='Товар успешно добавлен в корзину'
@@ -27,16 +28,15 @@ export function AddToBasketSuccessModalContent({ onActionClick }: AddToBasketSuc
       />
       <div className='modal__buttons'>
         <button
-          onClick={onActionClick}
+          onClick={onContinueBuy}
           type='button'
           className='btn btn--transparent modal__btn'
-
         >
           Продолжить покупки
         </button>
         <Link
           className='btn btn--purple modal__btn modal__btn--fit-width'
-          onClick={onActionClick}
+          onClick={onBasketLinkClick}
           to={AppRoutesEnum.Basket}
         >
           Перейти в корзину

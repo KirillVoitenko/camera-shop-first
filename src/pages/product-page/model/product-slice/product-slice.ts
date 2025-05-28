@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ProductSliceState } from './types';
-import { fetchProductAction } from './actions';
+import { addNewCommentAction, fetchProductAction } from './actions';
 
 export const INITIAL_STATE: ProductSliceState = {
   loading: false,
@@ -28,6 +28,18 @@ const productSlice = createSlice({
     builder.addCase(fetchProductAction.rejected, (state) => {
       state.loading = false;
       state.product = null;
+    });
+
+    builder.addCase(addNewCommentAction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(addNewCommentAction.fulfilled, (state, action) => {
+      const newComment = action.payload;
+      state.comments.push(newComment);
+      state.loading = false;
+    });
+    builder.addCase(addNewCommentAction.rejected, (state) => {
+      state.loading = false;
     });
   },
 });

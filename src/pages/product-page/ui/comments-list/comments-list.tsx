@@ -1,24 +1,56 @@
-import { CommentCard } from '@entities/comment';
+import { CommentCard, NewCommentForm } from '@entities/comment';
+import { NewComment } from '@entities/comment/model/types';
 import {
   COMMENTS_IN_ONE_PRINT,
   REVIEWS_EMPTY_SECTION_TEST_ID,
   REVIEWS_LIST_TEST_ID
 } from '@pages/product-page/config/const';
 import { productCommentsSelector } from '@pages/product-page/model/product-slice';
-import { useAppSelector } from '@shared/lib/store';
+import { addNewCommentAction } from '@pages/product-page/model/product-slice/actions';
+import { useAppDispatch, useAppSelector } from '@shared/lib/store';
+import { Modal } from '@shared/ui/modal';
+import { TOAST_CONTAINER_ID } from '@shared/ui/toast-container';
 import { JSX, useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const INTERSECTION_OBSERVER_OPTIONS: IntersectionObserverInit = {
   threshold: 1
 };
 
-export function CommentsList(): JSX.Element {
+type CommentsListProps = {
+  productId: number;
+}
+
+export function CommentsList({ productId }: CommentsListProps): JSX.Element {
   const showMoreButtonRef = useRef<HTMLButtonElement>(null);
   const comments = useAppSelector(productCommentsSelector);
+  const dispatch = useAppDispatch();
+
   const [printedCommentsCount, setPrintedCommentsCount] = useState(Math.min(comments.length, COMMENTS_IN_ONE_PRINT));
+  const [newCommentFormVisible, setNewCommentFormVisible] = useState<boolean>(false);
+  const sortedComments = [...comments].sort((first, second) => {
+    const firstCommentCreationDate = Date.parse(first.createAt);
+    const secondCommentCreationDate = Date.parse(second.createAt);
+    return secondCommentCreationDate - firstCommentCreationDate;
+  });
+
+  const closeNewCommentForm = () => setNewCommentFormVisible(false);
 
   const renderMoreComments = () => {
     setPrintedCommentsCount((previous) => Math.min(comments.length, previous + COMMENTS_IN_ONE_PRINT));
+  };
+
+  const submitNewCommentFormHandler = async (data: NewComment) => {
+    const dispatchedAction = await dispatch(addNewCommentAction(data));
+
+    if (dispatchedAction.type === addNewCommentAction.rejected.type) {
+      toast.error('Не удалось создать комметарий! Попробуйте ещё раз', {
+        containerId: TOAST_CONTAINER_ID
+      });
+      return;
+    }
+
+    closeNewCommentForm();
   };
 
   const intersectionObserverCallback: IntersectionObserverCallback = (entries) => {
@@ -43,14 +75,36 @@ export function CommentsList(): JSX.Element {
     },
   );
 
-  const printedComments = comments.slice(0, printedCommentsCount);
+  const printedComments = sortedComments.slice(0, printedCommentsCount);
 
   return printedComments.length > 0
     ? (
       <>
+        <div className='page-content__headed'>
+          <h2 className='title title--h3'>
+            Отзывы
+          </h2>
+          <button
+            className='btn'
+            type='button'
+            onClick={() => setNewCommentFormVisible(true)}
+          >
+            Оставить свой отзыв
+          </button>
+        </div>
         <ul className='review-block__list' data-testid={REVIEWS_LIST_TEST_ID}>
           {printedComments.map((current) => <CommentCard comment={current} key={current.id} />)}
         </ul>
+        <Modal
+          isOpened={newCommentFormVisible}
+          onClose={closeNewCommentForm}
+        >
+          <Modal.Content
+            title='Оставить отзыв'
+          >
+            <NewCommentForm productId={productId} onSubmit={submitNewCommentFormHandler} />
+          </Modal.Content>
+        </Modal>
         {printedComments.length < comments.length && (
           <div className='review-block__buttons'>
             <button ref={showMoreButtonRef} className='btn btn--purple' type='button' onClick={() => renderMoreComments()}>

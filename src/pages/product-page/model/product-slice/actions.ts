@@ -8,9 +8,11 @@ import { Comment } from '@entities/comment';
 import { isNotFoundResponseError } from '@shared/lib/axios';
 import { AppDispatch } from '@shared/model/redux';
 import { redirectToRouteAction } from '@shared/lib/store';
+import { NewComment } from '@entities/comment/model/types';
 
 export enum ProductSliceActionsName {
-  FetchProduct = 'product/fetch'
+  FetchProduct = 'product/fetch',
+  AddComment = 'product/addComment'
 }
 
 type FetchProductActionArguments = {
@@ -65,5 +67,19 @@ export const fetchProductAction = createAsyncThunk<
     result.similarProducts = similars;
 
     return result;
+  }
+);
+
+export const addNewCommentAction = createAsyncThunk<
+  Comment,
+  NewComment,
+  {
+    dispatch: AppDispatch;
+    extra: AxiosInstance;
+  }
+>(ProductSliceActionsName.AddComment,
+  async (newCommentData, {extra: apiInstance}): Promise<Comment> => {
+    const result = await apiInstance.post<Comment>(ServerRoutesEnum.Reviews, newCommentData);
+    return result.data;
   }
 );

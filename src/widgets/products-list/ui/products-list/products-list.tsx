@@ -53,7 +53,10 @@ export function ProductsList({ className, products }: ProductsListProps): JSX.El
         isOpened={addToBasketSuccessModalVisible}
         onClose={closeAddToBasketSuccessModalHandler}
       >
-        <AddToBasketSuccessModalContent onActionClick={closeAddToBasketSuccessModalHandler} />
+        <AddToBasketSuccessModalContent
+          onBasketLinkClick={closeAddToBasketSuccessModalHandler}
+          onContinueBuy={closeAddToBasketSuccessModalHandler}
+        />
       </Modal>
     </>
   );

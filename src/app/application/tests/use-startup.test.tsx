@@ -1,9 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { getStoreWrapper } from '@test-utills/wrappers';
-import { Action, createAsyncThunk } from '@reduxjs/toolkit';
+import { Action } from '@reduxjs/toolkit';
 import { generateProductMock, generatePromoProductMock } from '@test-utills/mocks/product';
 import faker from 'faker';
-import { Product } from '@entities/product';
 import { useStartup } from '../use-startup';
 import {
   AppThunkDispatch,
@@ -13,24 +12,16 @@ import {
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { RootState } from '@shared/model/redux';
 import { FC } from 'react';
-import { PromoProduct } from '@entities/product/model/types';
+import { fetchProductsAction } from '@entities/product';
+import { ServerRoutesEnum } from '@shared/model/enums';
 
 const INITIALIZE_BASKET_MOCK = vi.fn();
 const PRODUCTS_MOCK = Array.from({length: faker.datatype.number({max: 10})}).map(() => generateProductMock());
 const PROMOS_MOCK = Array.from({length: faker.datatype.number({max: 10})}).map(() => generatePromoProductMock());
 
-type FetchProductActionReturn = {
-  products: Product[];
-  promos: PromoProduct[];
-}
-
-const fakeFetchProductsAction = createAsyncThunk<FetchProductActionReturn, undefined>(
-  'test/fetchProduct',
-  async (): Promise<FetchProductActionReturn> => Promise.resolve({products: PRODUCTS_MOCK, promos: PROMOS_MOCK})
-);
-
 describe('Hook \'useStartup\'', () => {
-  const storeCreator = configureMockStore<RootState, Action<string>, AppThunkDispatch>([createAppThunkMiddlewareMock().middleware]);
+  const appThunkMiddlewareMock = createAppThunkMiddlewareMock();
+  const storeCreator = configureMockStore<RootState, Action<string>, AppThunkDispatch>([appThunkMiddlewareMock.middleware]);
   let store: ReturnType<typeof storeCreator>;
   let storeWrapper: FC;
 
@@ -42,21 +33,24 @@ describe('Hook \'useStartup\'', () => {
       }
     });
 
+    appThunkMiddlewareMock.axiosMockAdapter.reset();
+
+    appThunkMiddlewareMock.axiosMockAdapter.onGet(ServerRoutesEnum.Products).reply(200, PRODUCTS_MOCK);
+    appThunkMiddlewareMock.axiosMockAdapter.onGet(ServerRoutesEnum.Promo).reply(200, PROMOS_MOCK);
     storeWrapper = getStoreWrapper(store);
     INITIALIZE_BASKET_MOCK.mockReset();
   });
 
   it('should dispatch \'fetchProductsAction\'', async () => {
     vi.spyOn(await import('@features/basket'), 'useBasketInitialize').mockImplementation(() => INITIALIZE_BASKET_MOCK);
-    vi.spyOn(await import('@entities/product'), 'fetchProductsAction').mockImplementation(fakeFetchProductsAction);
 
     await waitFor(() => renderHook(() => useStartup(), {wrapper: storeWrapper}));
 
     const result = isActionsEquals(
       store.getActions(),
       [
-        fakeFetchProductsAction.pending,
-        fakeFetchProductsAction.fulfilled
+        fetchProductsAction.pending,
+        fetchProductsAction.fulfilled
       ]
     );
 
@@ -65,7 +59,6 @@ describe('Hook \'useStartup\'', () => {
 
   it('should initialize basket', async () => {
     vi.spyOn(await import('@features/basket'), 'useBasketInitialize').mockImplementation(() => INITIALIZE_BASKET_MOCK);
-    vi.spyOn(await import('@entities/product'), 'fetchProductsAction').mockImplementation(fakeFetchProductsAction);
 
     await waitFor(() => renderHook(() => useStartup(), {wrapper: storeWrapper}));
 

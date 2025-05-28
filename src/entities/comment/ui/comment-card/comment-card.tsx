@@ -1,8 +1,8 @@
 import { Classed } from '@shared/model/style-types';
 import { JSX } from 'react';
-import { Comment } from '../model/types';
+import { Comment } from '../../model/types';
 import classNames from 'classnames';
-import { COMMENT_CARD_TEST_ID } from '../config/const';
+import { COMMENT_CARD_TEST_ID } from '../../config/const';
 import { RateInfo } from '@shared/ui/rate-info';
 import dayjs from '@shared/lib/dayjs';
 

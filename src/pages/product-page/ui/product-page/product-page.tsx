@@ -63,12 +63,7 @@ function ProductPage(): JSX.Element {
             <div className='page-content__section'>
               <section className='review-block'>
                 <div className='container'>
-                  <div className='page-content__headed'>
-                    <h2 className='title title--h3'>
-                      Отзывы
-                    </h2>
-                  </div>
-                  <CommentsList />
+                  <CommentsList productId={product.id} />
                 </div>
               </section>
             </div>

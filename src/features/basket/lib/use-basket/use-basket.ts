@@ -6,6 +6,7 @@ import {
   basketDataSelector,
   updateItemAction,
   deleteItemAction,
+  clearBasketAction
 } from '@features/basket/model/basket-slice';
 import { useCallback } from 'react';
 
@@ -14,6 +15,7 @@ type UseBasketReturn = {
   addItem: (productId: number) => void;
   updateItem: (item: BasketItemShort) => void;
   deleteItem: (productId: number) => void;
+  clearBasket: () => void;
 }
 
 export function useBasket(): UseBasketReturn {
@@ -44,10 +46,19 @@ export function useBasket(): UseBasketReturn {
     [store]
   );
 
+  const clearBasket = useCallback(
+    () => {
+      store.dispatch(clearBasketAction());
+      basketStorage.clear();
+    },
+    [store]
+  );
+
   return {
     basket,
     addItem,
     updateItem,
-    deleteItem
+    deleteItem,
+    clearBasket
   };
 }

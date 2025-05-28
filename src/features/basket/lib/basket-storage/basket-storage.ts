@@ -4,6 +4,7 @@ import { BasketItemShort } from '@features/basket/model/types';
 export interface IBasketStorage {
   get: () => BasketItemShort[];
   update: (newValue: BasketItemShort[]) => void;
+  clear: () => void;
 }
 
 class BasketStorage implements IBasketStorage {
@@ -21,8 +22,12 @@ class BasketStorage implements IBasketStorage {
     return [];
   };
 
-  public update = (newValue: BasketItemShort[]) => {
+  public clear = () => {
     localStorage.removeItem(this.storageKey);
+  };
+
+  public update = (newValue: BasketItemShort[]) => {
+    this.clear();
     localStorage.setItem(this.storageKey, JSON.stringify(newValue));
   };
 }

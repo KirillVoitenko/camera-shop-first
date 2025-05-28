@@ -9,10 +9,21 @@ interface BaseOrder<TCouponType> {
   coupon: TCouponType;
 }
 
-export type OrderWithPublicCoupon = BaseOrder<PublicCoupon>;
+export type OrderWithPublicCoupon = BaseOrder<Nullable<PublicCoupon>>;
 
 export interface OrderWithPersonalCoupon extends BaseOrder<PersonalCoupon> {
   tel: string;
 }
 
 export type Order = OrderWithPersonalCoupon | OrderWithPublicCoupon;
+
+export type OrderStatusSuccess = {
+  status: 'success';
+}
+
+export type OrderStatusError = {
+  status: 'error';
+  resolution: string;
+}
+
+export type OrderStatus = OrderStatusSuccess | OrderStatusError;

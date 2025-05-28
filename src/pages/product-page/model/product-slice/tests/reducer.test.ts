@@ -6,8 +6,8 @@ import {
 import { ProductSliceState } from '../types';
 import { generateProductMock } from '@test-utills/mocks/product';
 import { emptyAction } from '@test-utills/mocks/redux';
-import { fetchProductAction, FetchProductActionReturn } from '../actions';
-import { generateCommentMock } from '@test-utills/mocks/comment';
+import { addNewCommentAction, fetchProductAction, FetchProductActionReturn } from '../actions';
+import { generateCommentMock, generateNewCommentDataMock } from '@test-utills/mocks/comment';
 
 describe('Product slice reducer', () => {
   let productMock: Product;
@@ -34,7 +34,7 @@ describe('Product slice reducer', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should return \'initialState\' by \'fetchProductAction.pending\' action', () => {
+  it('should return correct state by \'fetchProductAction.pending\' action', () => {
     const expectedState: ProductSliceState = {
       ...initialState,
       loading: true
@@ -45,7 +45,7 @@ describe('Product slice reducer', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should return \'initialState\' by \'fetchProductAction.fullfilled\' action', () => {
+  it('should return correct state by \'fetchProductAction.fullfilled\' action', () => {
     const actionReturnMock: FetchProductActionReturn = {
       comments: [generateCommentMock()],
       product: productMock,
@@ -65,7 +65,7 @@ describe('Product slice reducer', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should return \'initialState\' by \'fetchProductAction.rejected\' action', () => {
+  it('should return correct state by \'fetchProductAction.rejected\' action', () => {
     const expectedState: ProductSliceState = {
       ...initialState,
       loading: false,
@@ -73,6 +73,46 @@ describe('Product slice reducer', () => {
     };
 
     const result = productSlicePageReducer(initialState, fetchProductAction.rejected);
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by \'addNewCommentAction.pending\' action', () => {
+    const expectedState: ProductSliceState = {
+      ...initialState,
+      loading: true
+    };
+
+    const result = productSlicePageReducer(initialState, addNewCommentAction.pending);
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by \'addNewCommentAction.fullfilled\' action', () => {
+    const actionReturnMock = generateCommentMock();
+    const actionFetchArg = generateNewCommentDataMock(actionReturnMock.cameraId);
+
+    const expectedState: ProductSliceState = {
+      ...initialState,
+      loading: false,
+      product: null,
+      comments: [actionReturnMock],
+      similarProducts: []
+    };
+
+    const result = productSlicePageReducer(initialState, addNewCommentAction.fulfilled(actionReturnMock, '', actionFetchArg));
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by \'addNewCommentAction.rejected\' action', () => {
+    const expectedState: ProductSliceState = {
+      ...initialState,
+      loading: false,
+      product: null,
+    };
+
+    const result = productSlicePageReducer(initialState, addNewCommentAction.rejected);
 
     expect(result).toEqual(expectedState);
   });

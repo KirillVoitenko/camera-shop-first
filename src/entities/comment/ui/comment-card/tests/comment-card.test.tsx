@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { CommentCard } from '../comment-card';
+import { CommentCard } from '..';
 import { generateCommentMock } from '@test-utills/mocks/comment';
 
 const COMMENT_MOCK = generateCommentMock();

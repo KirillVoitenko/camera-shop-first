@@ -8,6 +8,7 @@ import { BasketItem } from '../basket-item';
 import classNames from 'classnames';
 import { Modal } from '@shared/ui/modal';
 import { DeleteBasketItemConfirmModalContent } from '../delete-basket-item-confirm-modal-content';
+import { BasketSummary } from '../basket-summary';
 
 const NOT_EXISTS_ITEM_ID = -1;
 
@@ -51,6 +52,7 @@ export function Basket({ className }: BasketProps): JSX.Element {
             />
           ))}
         </ul>
+        <BasketSummary productsInBasket={adaptedBasketInfo} />
         <Modal
           isOpened={deletingItemId !== NOT_EXISTS_ITEM_ID}
           onClose={escapeDeletingItemHandler}

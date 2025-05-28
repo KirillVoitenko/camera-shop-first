@@ -3,13 +3,17 @@ import type {
   OrderWithPersonalCoupon,
   OrderWithPublicCoupon,
   PersonalCoupon,
-  PublicCoupon
+  PublicCoupon,
+  OrderStatus,
+  OrderStatusError,
+  OrderStatusSuccess
 } from './model/types';
 import {
   isOrderWithPersonalCoupon,
   isOrderWithPublicCoupon
 } from './lib/type-guards';
 import { createOrderFetchAction } from './model/actions';
+import { CreateOrderResultModalContent } from './ui/create-order-result-modal-content';
 
 export {
   Order,
@@ -19,5 +23,9 @@ export {
   PublicCoupon,
   isOrderWithPersonalCoupon,
   isOrderWithPublicCoupon,
-  createOrderFetchAction
+  createOrderFetchAction,
+  OrderStatus,
+  OrderStatusError,
+  OrderStatusSuccess,
+  CreateOrderResultModalContent
 };

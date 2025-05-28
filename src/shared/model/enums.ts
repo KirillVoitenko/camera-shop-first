@@ -15,6 +15,7 @@ export enum ServerRoutesEnum {
   SimilarProducts = '/cameras/:cameraId/similar',
   Orders = '/orders',
   Promo = '/promo',
+  Reviews = '/reviews'
 }
 
 export enum MouseButtonEnum {
@@ -23,4 +24,20 @@ export enum MouseButtonEnum {
   Secondary = 2,
   Fourth = 3,
   Fifth = 4
+}
+
+export enum RatingValue {
+  Terrible = 1,
+  Bad = 2,
+  Normal = 3,
+  Good = 4,
+  Excellent = 5,
+}
+
+export enum RatingCaption {
+  Terrible = 'Ужасно',
+  Bad = 'Плохо',
+  Normal = 'Нормально',
+  Good = 'Хорошо',
+  Excellent = 'Отлично',
 }

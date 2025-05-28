@@ -1,5 +1,9 @@
-import { generateCommentMock } from './generate-comment-mock';
+import {
+  generateCommentMock,
+  generateNewCommentDataMock
+} from './generate-comment-mock';
 
 export {
-  generateCommentMock
+  generateCommentMock,
+  generateNewCommentDataMock
 };
