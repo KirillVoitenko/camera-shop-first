@@ -71,6 +71,13 @@ describe('Basket slice reducer', () => {
           productId: FAKE_PRODUCT_ID
         }
       ],
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
       loading: false
     };
 
@@ -87,6 +94,13 @@ describe('Basket slice reducer', () => {
           productId: FAKE_PRODUCT_ID
         }
       ],
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
       loading: false
     };
 
@@ -105,10 +119,17 @@ describe('Basket slice reducer', () => {
           productId: FAKE_PRODUCT_ID
         }
       ],
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
       loading: false
     };
 
-    const result = basketSliceReducer(INITIAL_STATE, initialize(expectedState.basket));
+    const result = basketSliceReducer(INITIAL_STATE, initialize({items: expectedState.basket, appliedCoupon: null}));
 
     expect(result).toEqual(expectedState);
   });
@@ -122,12 +143,26 @@ describe('Basket slice reducer', () => {
     const initState: BasketSliceState = {
       basket: [{count: 0, productId: FAKE_PRODUCT_ID}],
       loading: false,
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
     };
 
     const expectedState: BasketSliceState = {
       basket: [
         expectedBasketItem
       ],
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
       loading: false
     };
 
@@ -140,11 +175,25 @@ describe('Basket slice reducer', () => {
     const initState: BasketSliceState = {
       basket: [{count: 1, productId: FAKE_PRODUCT_ID}],
       loading: false,
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
     };
 
     const expectedState: BasketSliceState = {
       basket: [],
-      loading: false
+      loading: false,
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      },
     };
 
     const result = basketSliceReducer(initState, deleteItem(FAKE_PRODUCT_ID));

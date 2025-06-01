@@ -2,7 +2,6 @@ import {
   OrderStatus,
   OrderStatusError,
   OrderStatusSuccess,
-  PublicCoupon
 } from '@entities/order';
 import { useBasket } from '@features/basket/lib/use-basket';
 import { useOrderInfo } from '@features/basket/lib/use-order-info';
@@ -17,7 +16,6 @@ import { AppRoutesEnum } from '@shared/model/enums';
 
 type BasketOrderInfoProps = {
   basket: ProductInBasket[];
-  coupon?: Nullable<PublicCoupon>;
 }
 
 const ORDER_CREATE_SUCCESS_STATUS: OrderStatusSuccess = {
@@ -31,18 +29,18 @@ const createOrderErrorStatus = (resolution: string): OrderStatusError => ({
 
 type RedirectTarget = 'basket' | 'productList';
 
-export function BasketOrderInfo({ basket, coupon = null }: BasketOrderInfoProps): JSX.Element {
+export function BasketOrderInfo({ basket }: BasketOrderInfoProps): JSX.Element {
   const [orderStatus, setOrderStatus] = useState<Nullable<OrderStatus>>(null);
   const navigate = useNavigate();
+
+  const { clearBasket, coupon } = useBasket();
 
   const {
     getOrderPriceInfo,
     createOrder
   } = useOrderInfo();
 
-  const { clearBasket } = useBasket();
-
-  const priceInfo = getOrderPriceInfo(basket);
+  const priceInfo = getOrderPriceInfo(basket, coupon?.data?.discountPercent);
 
   const clearOrderStatus = () => setOrderStatus(null);
 
@@ -62,7 +60,8 @@ export function BasketOrderInfo({ basket, coupon = null }: BasketOrderInfoProps)
   };
 
   const orderSubmitHandler = () => {
-    createOrder(basket, coupon)
+    const couponString = coupon.data?.coupon ? coupon.data.coupon : null;
+    createOrder(basket, couponString)
       .then(() => {
         setOrderStatus(ORDER_CREATE_SUCCESS_STATUS);
       })

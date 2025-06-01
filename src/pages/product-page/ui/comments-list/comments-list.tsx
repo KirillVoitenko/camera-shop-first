@@ -1,4 +1,4 @@
-import { CommentCard, NewCommentForm } from '@entities/comment';
+import { CommentCard, CommentCreateSuccessModalContent, NewCommentForm } from '@entities/comment';
 import { NewComment } from '@entities/comment/model/types';
 import {
   COMMENTS_IN_ONE_PRINT,
@@ -8,9 +8,11 @@ import {
 import { productCommentsSelector } from '@pages/product-page/model/product-slice';
 import { addNewCommentAction } from '@pages/product-page/model/product-slice/actions';
 import { useAppDispatch, useAppSelector } from '@shared/lib/store';
+import { AppRoutesEnum } from '@shared/model/enums';
 import { Modal } from '@shared/ui/modal';
 import { TOAST_CONTAINER_ID } from '@shared/ui/toast-container';
 import { JSX, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const INTERSECTION_OBSERVER_OPTIONS: IntersectionObserverInit = {
@@ -25,9 +27,11 @@ export function CommentsList({ productId }: CommentsListProps): JSX.Element {
   const showMoreButtonRef = useRef<HTMLButtonElement>(null);
   const comments = useAppSelector(productCommentsSelector);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [printedCommentsCount, setPrintedCommentsCount] = useState(Math.min(comments.length, COMMENTS_IN_ONE_PRINT));
   const [newCommentFormVisible, setNewCommentFormVisible] = useState<boolean>(false);
+  const [addNewCommentSuccessVisible, setAddNewCommentSuccessVisible] = useState<boolean>(false);
   const sortedComments = [...comments].sort((first, second) => {
     const firstCommentCreationDate = Date.parse(first.createAt);
     const secondCommentCreationDate = Date.parse(second.createAt);
@@ -35,6 +39,7 @@ export function CommentsList({ productId }: CommentsListProps): JSX.Element {
   });
 
   const closeNewCommentForm = () => setNewCommentFormVisible(false);
+  const closeAddNewCommentSuccessModal = () => setAddNewCommentSuccessVisible(false);
 
   const renderMoreComments = () => {
     setPrintedCommentsCount((previous) => Math.min(comments.length, previous + COMMENTS_IN_ONE_PRINT));
@@ -49,8 +54,13 @@ export function CommentsList({ productId }: CommentsListProps): JSX.Element {
       });
       return;
     }
-
+    setAddNewCommentSuccessVisible(true);
     closeNewCommentForm();
+  };
+
+  const addNewCommentSuccessActionClickHandler = () => {
+    closeAddNewCommentSuccessModal();
+    navigate(AppRoutesEnum.Main);
   };
 
   const intersectionObserverCallback: IntersectionObserverCallback = (entries) => {
@@ -104,6 +114,13 @@ export function CommentsList({ productId }: CommentsListProps): JSX.Element {
           >
             <NewCommentForm productId={productId} onSubmit={submitNewCommentFormHandler} />
           </Modal.Content>
+        </Modal>
+        <Modal
+          className='modal--narrow'
+          isOpened={addNewCommentSuccessVisible}
+          onClose={closeAddNewCommentSuccessModal}
+        >
+          <CommentCreateSuccessModalContent onActionClick={addNewCommentSuccessActionClickHandler}/>
         </Modal>
         {printedComments.length < comments.length && (
           <div className='review-block__buttons'>

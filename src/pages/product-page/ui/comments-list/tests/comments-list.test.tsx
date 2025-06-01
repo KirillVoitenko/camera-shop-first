@@ -10,20 +10,30 @@ import { generateCommentMock } from '@test-utills/mocks/comment';
 import faker from 'faker';
 import userEvent from '@testing-library/user-event';
 import { intersectionObserverMock } from '@test-utills/mocks/system-modules';
+import { createMemoryHistory } from 'history';
 
 const SHOW_MORE_BUTTON_PATTERN = /показать больше отзывов/gi;
 const COMMENT_CARD_TEST_ID = 'comment-card-container';
 
 vi.mock('IntersectionObserver');
 
+const FAKE_PRODUCT_ID = faker.datatype.number();
+
 describe('Component \'CommentsList\'', () => {
+  const initialRoute = '/init-route';
+  const history = createMemoryHistory();
+
   beforeAll(() => {
     window.IntersectionObserver = intersectionObserverMock;
   });
 
+  beforeEach(() => {
+    history.replace(initialRoute);
+  });
+
   it('should correct render by 0 comments', () => {
     const { wrappedComponent } = withStore(
-      <CommentsList />,
+      <CommentsList productId={FAKE_PRODUCT_ID} />,
       {
         product: {
           comments: [],
@@ -31,7 +41,9 @@ describe('Component \'CommentsList\'', () => {
           product: null,
           similarProducts: []
         }
-      }
+      },
+      [],
+      history
     );
 
     const screen = render(wrappedComponent);
@@ -42,7 +54,7 @@ describe('Component \'CommentsList\'', () => {
 
   it(`should correct render by comments count <= ${COMMENTS_IN_ONE_PRINT}`, () => {
     const { wrappedComponent } = withStore(
-      <CommentsList />,
+      <CommentsList productId={FAKE_PRODUCT_ID} />,
       {
         product: {
           comments: Array.from({length: COMMENTS_IN_ONE_PRINT}).map(() => generateCommentMock()),
@@ -50,7 +62,9 @@ describe('Component \'CommentsList\'', () => {
           product: null,
           similarProducts: []
         }
-      }
+      },
+      [],
+      history
     );
 
     const screen = render(wrappedComponent);
@@ -64,7 +78,7 @@ describe('Component \'CommentsList\'', () => {
   it(`should correct render by comments count >= ${COMMENTS_IN_ONE_PRINT}`, async () => {
     const commentsMock = Array.from({length: faker.datatype.number({min: COMMENTS_IN_ONE_PRINT + 1, max: COMMENTS_IN_ONE_PRINT + 30})}).map(() => generateCommentMock());
     const { wrappedComponent } = withStore(
-      <CommentsList />,
+      <CommentsList productId={FAKE_PRODUCT_ID} />,
       {
         product: {
           comments: commentsMock,
@@ -72,7 +86,9 @@ describe('Component \'CommentsList\'', () => {
           product: null,
           similarProducts: []
         }
-      }
+      },
+      [],
+      history
     );
 
     const screen = render(wrappedComponent);

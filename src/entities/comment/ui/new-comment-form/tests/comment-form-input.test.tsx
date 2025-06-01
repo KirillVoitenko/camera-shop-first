@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { CommentFormInput } from '../comment-form-input';
 import faker from 'faker';
-import { NewCommentFormValue } from '@entities/comment/model/types';
+import { NewComment } from '@entities/comment/model/types';
 import { UseFormRegister } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
 
@@ -9,13 +9,13 @@ const FAKE_CAPTION = faker.datatype.string();
 const FAKE_ERROR_TEXT = faker.lorem.sentence();
 
 describe('component \'CommentFormInput\'', () => {
-  const registerMock: UseFormRegister<NewCommentFormValue> = (name) => ({
+  const registerMock: UseFormRegister<NewComment> = (name) => ({
     name,
     onBlur: vi.fn(),
     onChange: vi.fn(),
     ref: vi.fn()
   });
-  const inputName: keyof NewCommentFormValue = 'advantage';
+  const inputName: keyof NewComment = 'advantage';
 
   it('should correct render with error', () => {
     const screen = render(<CommentFormInput caption={FAKE_CAPTION} name={inputName} register={registerMock} error={{type: 'max', message: FAKE_ERROR_TEXT}} />);

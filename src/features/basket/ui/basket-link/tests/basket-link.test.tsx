@@ -16,14 +16,21 @@ type LinkClickEachArg = {
   route?: string;
 }
 
-const createBasketItems = (length: number): BasketItemShort[] => Array.from({length}).map(() => ({
+const createBasketItems = (length: number): BasketItemShort[] => Array.from({ length }).map(() => ({
   count: faker.datatype.number(),
   productId: faker.datatype.number()
 }));
 
 const INITIAL_STATE: BasketSliceState = {
-  basket: createBasketItems(faker.datatype.number({max: 10, min: 2})),
+  basket: createBasketItems(faker.datatype.number({ max: 10, min: 2 })),
   loading: false,
+  coupon: {
+    data: {
+      coupon: null,
+      discountPercent: 0
+    },
+    status: 'success'
+  }
 };
 
 const CUSTOM_ROUTE = '/custom-basket-route';
@@ -60,7 +67,14 @@ describe('component \'BasketLink\'', () => {
       {
         basket: {
           basket: [],
-          loading: false
+          loading: false,
+          coupon: {
+            data: {
+              coupon: null,
+              discountPercent: 0
+            },
+            status: 'success'
+          }
         }
       },
       undefined,
@@ -79,7 +93,7 @@ describe('component \'BasketLink\'', () => {
     { linkName: 'custom', route: CUSTOM_ROUTE }
   ])('basket link click should navigate to $linkName route', async ({ route }) => {
     const { wrappedComponent } = withStore(
-      <BasketLink link={route}/>,
+      <BasketLink link={route} />,
       {
         basket: INITIAL_STATE
       },

@@ -6,6 +6,7 @@ import {
   updateItem as updateItemAction,
   deleteItem as deleteItemAction,
   clearBasket as clearBasketAction,
+  clearCoupon as clearCouponAction,
 } from './basket-slice';
 import { basketLoadingSelector, basketDataSelector } from './selectors';
 
@@ -18,5 +19,6 @@ export {
   initializeBasketAction,
   updateItemAction,
   deleteItemAction,
-  clearBasketAction
+  clearBasketAction,
+  clearCouponAction
 };

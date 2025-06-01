@@ -12,7 +12,7 @@ type ChangeCounterButtonEachArg = {
 }
 
 const generateBasketItem = (): BasketItemShort => ({
-  count: faker.datatype.number({ min: CounterRange.Min, max: CounterRange.Max }),
+  count: faker.datatype.number({ min: CounterRange.Min + 1, max: CounterRange.Max - 1}),
   productId: faker.datatype.number(),
 });
 

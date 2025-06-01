@@ -10,7 +10,7 @@ import { RootState } from '@shared/model/redux';
 const PRODUCT_CARD_TEST_ID = 'short-product-card-container';
 
 const PRODUCTS_MOCK = Array.from({ length: faker.datatype.number({min: 1, max: 20 }) }).map(generateProductMock);
-const STORE_MOCK: Partial<RootState> = { products: { loading: false, products: PRODUCTS_MOCK, promos: [] }, basket: { loading: false, basket: [] } };
+const STORE_MOCK: Partial<RootState> = { products: { loading: false, products: PRODUCTS_MOCK, promos: [] }, basket: { loading: false, basket: [], coupon: {data: null, status: 'error'} } };
 
 describe('Component \'ProductsList\'', () => {
   const history = createMemoryHistory();

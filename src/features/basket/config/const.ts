@@ -11,10 +11,11 @@ export enum BasketLinkTestId {
 }
 
 export const BASKET_STORAGE_KEY = 'CAMERA_SHOP/BASKET';
+export const COUPON_STORAGE_KEY = 'CAMERA_SHOP/APPLIED_COUPON';
 
 export enum CounterRange {
   Min = 1,
-  Max = 99,
+  Max = 9,
 }
 
 export enum BasketItemTestId {

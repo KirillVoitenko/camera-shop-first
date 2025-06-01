@@ -8,12 +8,19 @@ import { MainPageWithTitle as MainPage } from '../main-page';
 const INITIAL_STATE: Partial<RootState> = {
   products: {
     loading: false,
-    products: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generateProductMock()),
-    promos: Array.from({length: faker.datatype.number({max: 10, min: 3})}).map(() => generatePromoProductMock()),
+    products: Array.from({ length: faker.datatype.number({ max: 10, min: 3 }) }).map(() => generateProductMock()),
+    promos: Array.from({ length: faker.datatype.number({ max: 10, min: 3 }) }).map(() => generatePromoProductMock()),
   },
   basket: {
     basket: [],
-    loading: false
+    loading: false,
+    coupon: {
+      data: {
+        coupon: null,
+        discountPercent: 0
+      },
+      status: 'success'
+    }
   }
 };
 

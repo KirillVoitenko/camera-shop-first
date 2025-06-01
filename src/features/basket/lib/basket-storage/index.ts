@@ -1,6 +1,6 @@
-import { basketStorage, IBasketStorage } from './basket-storage';
+import { getBasketStorageInstance, IBasketStorage } from './basket-storage';
 
 export {
-  basketStorage,
+  getBasketStorageInstance,
   type IBasketStorage
 };

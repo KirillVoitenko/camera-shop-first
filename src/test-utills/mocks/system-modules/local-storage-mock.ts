@@ -7,6 +7,10 @@ export class LocalStorageMock implements Storage {
     this.values = initial;
   }
 
+  public get storageCopy(): Record<string, string> {
+    return structuredClone(this.values);
+  }
+
   public getItem(key: string): Nullable<string> {
     return key in this.values ? this.values[key] : null;
   }

@@ -12,8 +12,6 @@ import {
   updateItemAction,
   deleteItemAction
 } from '@features/basket/model/basket-slice';
-import { basketStorage } from '../../basket-storage';
-
 
 const generateBasketItem = (): BasketItemShort => ({
   count: faker.datatype.number(),
@@ -21,12 +19,6 @@ const generateBasketItem = (): BasketItemShort => ({
 });
 
 describe('hook \'useBasket\'', () => {
-  const getStorageItemMock = vi.fn();
-  const updateStorageItemMock = vi.fn();
-
-  vi.spyOn(basketStorage, 'get').mockImplementation(getStorageItemMock);
-  vi.spyOn(basketStorage, 'update').mockImplementation(updateStorageItemMock);
-
   const basketMock = Array.from({length: faker.datatype.number()}).map(generateBasketItem);
   const storeCreator = configureMockStore<RootState, Action<string>, AppThunkDispatch>();
 
@@ -39,8 +31,6 @@ describe('hook \'useBasket\'', () => {
 
   beforeEach(() => {
     store.clearActions();
-    getStorageItemMock.mockReset();
-    updateStorageItemMock.mockReset();
   });
 
   it('should return correct signature', () => {
@@ -49,9 +39,9 @@ describe('hook \'useBasket\'', () => {
     const { addItem, basket, deleteItem, updateItem } = result.current;
 
     expect(basket).toEqual(basketMock);
-    expect(typeof addItem).toBe('function');
-    expect(typeof deleteItem).toBe('function');
-    expect(typeof updateItem).toBe('function');
+    expectTypeOf(addItem).toMatchTypeOf<(productId: number) => void>();
+    expectTypeOf(deleteItem).toMatchTypeOf<(productId: number) => void>();
+    expectTypeOf(updateItem).toMatchTypeOf<(item: BasketItemShort) => void>();
   });
 
   it('method \'addItem\' should correct works', () => {
@@ -62,7 +52,6 @@ describe('hook \'useBasket\'', () => {
     act(() => addItem(faker.datatype.number()));
 
     expect(isActionsEquals(store.getActions(), [addItemAction])).toBeTruthy();
-    expect(updateStorageItemMock).toBeCalledTimes(1);
   });
 
   it('method \'updateItem\' should correct works', () => {
@@ -73,7 +62,6 @@ describe('hook \'useBasket\'', () => {
     act(() => updateItem({...basketMock[0], count: faker.datatype.number()}));
 
     expect(isActionsEquals(store.getActions(), [updateItemAction])).toBeTruthy();
-    expect(updateStorageItemMock).toBeCalledTimes(1);
   });
 
   it('method \'deleteItem\' should correct works', () => {
@@ -84,6 +72,5 @@ describe('hook \'useBasket\'', () => {
     act(() => deleteItem(basketMock[0].productId));
 
     expect(isActionsEquals(store.getActions(), [deleteItemAction])).toBeTruthy();
-    expect(updateStorageItemMock).toBeCalledTimes(1);
   });
 });

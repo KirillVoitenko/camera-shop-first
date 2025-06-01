@@ -35,7 +35,17 @@ describe('component \'BasketItem\'', () => {
       addItem: addItemMock,
       basket: [fakeBasketItemMock],
       deleteItem: deleteItemMock,
-      updateItem: updateItemMock
+      updateItem: updateItemMock,
+      applyCoupon: vi.fn(),
+      clearBasket: vi.fn(),
+      clearCoupon: vi.fn(),
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      }
     }));
 
     const screen = render(<BasketItem item={productInBasket} onDeleteItem={deleteModalOpenMock}/>);
@@ -52,7 +62,17 @@ describe('component \'BasketItem\'', () => {
       addItem: addItemMock,
       basket: [fakeBasketItemMock],
       deleteItem: deleteItemMock,
-      updateItem: updateItemMock
+      updateItem: updateItemMock,
+      applyCoupon: vi.fn(),
+      clearBasket: vi.fn(),
+      clearCoupon: vi.fn(),
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      }
     }));
 
     const screen = render(<BasketItem item={productInBasket} onDeleteItem={deleteModalOpenMock}/>);

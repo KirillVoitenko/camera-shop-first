@@ -27,6 +27,13 @@ const INITIAL_STATE: Partial<RootState> = {
   basket: {
     basket: [],
     loading: false,
+    coupon: {
+      status: 'success',
+      data: {
+        coupon: null,
+        discountPercent: 0
+      }
+    }
   }
 };
 

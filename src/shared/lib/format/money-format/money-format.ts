@@ -1,10 +1,14 @@
-const intFormatter = new Intl.NumberFormat('ru-RU', {
+const intFormatter = (fractionDigits = 0) => new Intl.NumberFormat('ru-RU', {
   style: 'currency',
   currency: 'RUB',
   currencyDisplay: 'symbol',
 
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 0
+  maximumFractionDigits: fractionDigits,
+  minimumFractionDigits: fractionDigits,
 });
 
-export const moneyFormat = (value: number): string => intFormatter.format(value);
+export const moneyFormat = (value: number): string => {
+  const fractionDigits = Number.isInteger(value) ? 0 : 2;
+  const formatter = intFormatter(fractionDigits);
+  return formatter.format(value);
+};

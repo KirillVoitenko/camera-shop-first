@@ -12,7 +12,7 @@ type OrderPriceInfo = {
 }
 
 type UseOrderInfoReturn = {
-  getOrderPriceInfo: (productsInfo: ProductInBasket[]) => OrderPriceInfo;
+  getOrderPriceInfo: (productsInfo: ProductInBasket[], couponDiscount?: number) => OrderPriceInfo;
   createOrder: (productsInfo: ProductInBasket[], coupon: Nullable<PublicCoupon>) => Promise<void>;
 }
 
@@ -21,12 +21,13 @@ export const useOrderInfo = (): UseOrderInfoReturn => {
   const dispatch = useAppDispatch();
 
 
-  const getOrderPriceInfo = (productsInfo: ProductInBasket[]): OrderPriceInfo => {
+  const getOrderPriceInfo = (productsInfo: ProductInBasket[], couponDiscount = 0): OrderPriceInfo => {
     const priceInfo = getPriceInfo(productsInfo, promos);
     const discountValue = getDiscountValue(priceInfo.productsWithoutPromos);
 
-    const discountPrice = priceInfo.productsWithoutPromos.price * discountValue;
     const allPrice = priceInfo.promoProducts.price + priceInfo.productsWithoutPromos.price;
+    const couponDiscountPrice = allPrice * (couponDiscount / 100);
+    const discountPrice = priceInfo.productsWithoutPromos.price * discountValue + couponDiscountPrice;
     const toPaymentPrice = allPrice - discountPrice;
 
     return {

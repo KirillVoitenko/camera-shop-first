@@ -1,35 +1,26 @@
-import { BASKET_STORAGE_KEY } from '@features/basket/config/const';
-import { BasketItemShort } from '@features/basket/model/types';
+import { BASKET_STORAGE_KEY, COUPON_STORAGE_KEY } from '@features/basket/config/const';
+import { AppliedCoupon, BasketItemShort } from '@features/basket/model/types';
+import { IToken, LocalStorageToken } from '@shared/lib/token';
+import { Nullable } from '@shared/model/utill-types';
 
 export interface IBasketStorage {
-  get: () => BasketItemShort[];
-  update: (newValue: BasketItemShort[]) => void;
-  clear: () => void;
+  get basket(): IToken<BasketItemShort[]>;
+  get coupon(): IToken<Nullable<AppliedCoupon>>;
 }
 
 class BasketStorage implements IBasketStorage {
-  private storageKey = BASKET_STORAGE_KEY;
+  private basketStorageKey = BASKET_STORAGE_KEY;
+  private couponStorageKey = COUPON_STORAGE_KEY;
 
-  private get storageData() {
-    return localStorage.getItem(this.storageKey);
+  public get basket(): IToken<BasketItemShort[]> {
+    return new LocalStorageToken<BasketItemShort[]>(this.basketStorageKey, []);
   }
 
-  public get = () => {
-    if(this.storageData) {
-      return JSON.parse(this.storageData) as BasketItemShort[];
-    }
-
-    return [];
-  };
-
-  public clear = () => {
-    localStorage.removeItem(this.storageKey);
-  };
-
-  public update = (newValue: BasketItemShort[]) => {
-    this.clear();
-    localStorage.setItem(this.storageKey, JSON.stringify(newValue));
-  };
+  public get coupon(): IToken<Nullable<AppliedCoupon>> {
+    return new LocalStorageToken<Nullable<AppliedCoupon>>(this.couponStorageKey, null);
+  }
 }
 
-export const basketStorage: IBasketStorage = new BasketStorage();
+const basketStorage: IBasketStorage = new BasketStorage();
+
+export const getBasketStorageInstance = (): IBasketStorage => basketStorage;

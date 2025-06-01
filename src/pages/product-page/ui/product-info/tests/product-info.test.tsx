@@ -19,7 +19,16 @@ describe('Component \'ProductInfo\'' , () => {
       addItem: addToBasketMock,
       deleteItem: vi.fn(),
       updateItem: vi.fn(),
-      clearBasket: vi.fn()
+      clearBasket: vi.fn(),
+      applyCoupon: vi.fn(),
+      clearCoupon: vi.fn(),
+      coupon: {
+        data: {
+          coupon: null,
+          discountPercent: 0
+        },
+        status: 'success'
+      }
     })));
 
     const screen = render(withRouter(<ProductInfo product={PRODUCT_MOCK}/>));

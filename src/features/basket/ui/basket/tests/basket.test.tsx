@@ -27,7 +27,14 @@ describe('component \'Basket\'', () => {
         },
         basket: {
           basket: [FAKE_BASKET_ITEM],
-          loading: false
+          loading: false,
+          coupon: {
+            status: 'success',
+            data: {
+              coupon: null,
+              discountPercent: 0
+            }
+          }
         }
       },
       undefined,

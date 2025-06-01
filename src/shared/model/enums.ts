@@ -15,7 +15,8 @@ export enum ServerRoutesEnum {
   SimilarProducts = '/cameras/:cameraId/similar',
   Orders = '/orders',
   Promo = '/promo',
-  Reviews = '/reviews'
+  Reviews = '/reviews',
+  Coupons = '/coupons'
 }
 
 export enum MouseButtonEnum {
